@@ -1,0 +1,6 @@
+go 1.19
+//use所有的包名
+use (
+	./project-common
+	./project-user
+)
