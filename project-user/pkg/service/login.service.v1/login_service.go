@@ -5,8 +5,9 @@ import (
 	"errors"
 	"go.uber.org/zap"
 	"log"
+	"math/rand"
+	"strconv"
 	common "test.com/project-common"
-	"test.com/project-user/api/user"
 	"test.com/project-user/pkg/dao"
 	"test.com/project-user/pkg/repo"
 	"time"
@@ -27,7 +28,7 @@ func (lg *LoginService) GetCaptcha(c context.Context, msg *CaptchaRequest) (*Cap
 	if !common.VerifyMobile(mobile) {
 		return nil, errors.New("手机号不合法")
 	}
-	code := user.RandomCaptCha()
+	code := RandomCaptCha()
 	go func() { //发送短信
 		time.Sleep(2 * time.Second)
 		zap.L().Info("api发送短信 info") //假设发送成功
@@ -43,4 +44,14 @@ func (lg *LoginService) GetCaptcha(c context.Context, msg *CaptchaRequest) (*Cap
 	}()
 
 	return &CaptchaResponse{}, nil
+}
+
+func RandomCaptCha() string {
+	rand.Seed(time.Now().UnixNano()) // 使用当前时间作为随机数种子
+
+	min := 100000
+	max := 999999
+	randomNumber := rand.Intn(max-min+1) + min
+
+	return strconv.Itoa(randomNumber)
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	common "test.com/project-common"
-	_ "test.com/project-user/api" //什么意思，导入
 	"test.com/project-user/config"
 	"test.com/project-user/router"
 )
