@@ -1,6 +1,6 @@
 server:
   name: "project-user"
-  addr: "127.0.0.1:80"
+  addr: "127.0.0.1:8080"
 zap:
   DebugFileName: "D:\\GoWorks\\project\\ms_project\\logs\\debug\\project-debug.log"
   InfoFileName: "D:\\GoWorks\\project\\ms_project\\logs\\info\\project-info.log"
@@ -16,3 +16,8 @@ redis:
 grpc:
   addr: "127.0.0.1:8881"
   name: "user"
+  version: "1.0.0"
+  weight: 2
+etcd:
+  addrs:
+    - "127.0.0.1:2379"

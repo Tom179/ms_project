@@ -3,6 +3,7 @@ package common
 //启动服务器
 import (
 	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -28,11 +29,12 @@ func Run(r *gin.Engine, srvName string, addr string, stop func()) { //传入Engi
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM) //监听中断命令
 
-	<-quit //阻塞直到接收值，才继续执行后续代码
+	<-quit //阻塞直到接收值，才继续执行后续代码:关闭服务器
 	log.Printf("管道接收到停止信号，关闭%s服务器...\n", srvName)
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()   //取消等待，直接结束。这里是没有达到2秒时手动结束操作
 	if stop != nil { //停止微服务
+		fmt.Println("stop函数不为空,停止微服务")
 		stop()
 	}
 

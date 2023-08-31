@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7880dfdd-d5a1-4e3a-8353-9bc8e718c334" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/ms_project.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/api/api.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/api/user/router.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/api/user/rpc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/api/user/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/config/config.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/config/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/go.mod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/go.sum" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/pkg/model/code.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-api/router/router.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-common/discovery/discovery.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-common/discovery/resover.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-common/discovery/server.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-common/errs/errs.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-common/errs/grpc_err.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-user/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-user/api/proto/gen/login_service.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-user/api/proto/gen/login_service_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.work" beforeDir="false" afterPath="$PROJECT_DIR$/go.work" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.work.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.work.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/debug/project-debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/debug/project-debug.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/info/project-info.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/info/project-info.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-common/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-common/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-common/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/run.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-common/validate.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/validate.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/api/proto/login_service.proto" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/api/proto/login_service.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/config/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/config/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/pkg/model/code.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/pkg/model/code.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/router/router.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../.Go语言环境" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2SurhdwzB6PAEo4KxTkBWfgnwRT" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "D:/GoWorks/others/dockerTry/welcome-to-docker"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GoWorks\project\ms_project\project-user\pkg\service\login.service.v1" />
+      <recent name="D:\GoWorks\project\ms_project\project-api" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\GoWorks\project\ms_project\project-user\api\user" />
+      <recent name="D:\GoWorks\project\ms_project\project-user" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.go build test.com/project-api">
+    <configuration name="go build project-api" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="ms_project" />
+      <working_directory value="$PROJECT_DIR$/project-api" />
+      <kind value="PACKAGE" />
+      <package value="project-api" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/project-api/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build test.com/project-api" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="ms_project" />
+      <working_directory value="$PROJECT_DIR$/project-api" />
+      <kind value="PACKAGE" />
+      <package value="test.com/project-api" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/project-api/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build test.com/project-user" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="ms_project" />
+      <working_directory value="$PROJECT_DIR$/project-user" />
+      <kind value="PACKAGE" />
+      <package value="test.com/project-user" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/project-user/main.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build test.com/project-api" />
+        <item itemvalue="Go Build.go build test.com/project-user" />
+        <item itemvalue="Go Build.go build project-api" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>

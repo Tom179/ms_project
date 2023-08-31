@@ -1,0 +1,13 @@
+server:
+  name: "project-api"
+  addr: "127.0.0.1:80"
+zap:
+  DebugFileName: "D:\\GoWorks\\project\\ms_project\\logs\\debug\\project-debug.log"
+  InfoFileName: "D:\\GoWorks\\project\\ms_project\\logs\\info\\project-info.log"
+  WarnFileName: "D:\\GoWorks\\project\\ms_project\\logs\\error\\project-error.log"
+  MaxSize: 500
+  MaxAge: 28
+  MaxBackups: 3
+etcd:
+  addrs:
+    - "127.0.0.1:2379"

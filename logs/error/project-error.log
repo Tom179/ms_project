@@ -1,0 +1,5 @@
+{"level":"ERROR","time":"2023-08-23T19:45:48.908+0800","caller":"discovery/discovery.go:120","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2023-08-27T21:18:16.576+0800","caller":"discovery/resover.go:113","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2023-08-27T21:19:16.571+0800","caller":"discovery/resover.go:113","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2023-08-27T21:20:16.578+0800","caller":"discovery/resover.go:113","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2023-08-27T21:26:33.436+0800","caller":"discovery/resover.go:113","msg":"sync failed","error":"没有找到服务"}

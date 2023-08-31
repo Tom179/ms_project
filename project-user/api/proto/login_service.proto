@@ -7,7 +7,7 @@ message CaptchaRequest{
 }
 
 message CaptchaResponse{
-
+ string code =1;
 }
 
 service LoginService{
