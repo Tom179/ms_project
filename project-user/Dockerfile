@@ -1,14 +1,14 @@
-#用于构建docker镜像
+#用于构建docker镜像，注意这是user服务
 FROM alpine
 # 使用 Alpine Linux 作为基础镜像。Alpine 是一个轻量级的 Linux 发行版，非常适合用作 Docker 镜像的基础
 WORKDIR /Initial
 #设置容器中的工作目录为 /Initial
 COPY ./target/project-user .
 #将宿主机上 ./target/project-user 文件复制到容器中的当前工作目录 /Initial
-COPY ./config/app-docker.yaml .
-# 将宿主机上的 ./config/app-docker.yaml 文件复制到容器中的当前工作目录 /Initial
-RUN  mkdir config && mv app-docker.yaml config/app.yaml
-#在容器中创建一个 config 目录，然后将 app-docker.yaml 文件移动到 config 目录并重命名为 app.yaml
+COPY ./config/config-docker.yaml .
+# 将宿主机上的 ./config/config-docker.yaml 文件复制到容器中的当前工作目录 /Initial
+RUN  mkdir config && mv config-docker.yaml config/config.yaml
+#在容器中创建一个 config 目录，然后将 config-docker.yaml 文件移动到 config 目录并重命名为 config.yaml
 EXPOSE 8080 8881
 #指定容器暴露的端口号。这里指定了两个端口号，分别是 8080 和 8881。
 ENTRYPOINT ["./project-user"]

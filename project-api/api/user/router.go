@@ -18,5 +18,7 @@ type RouterUser struct {
 func (*RouterUser) SetRoute(r *gin.Engine) { //实现路由接口
 	InitRpcUserClient() //连接grpc服务
 	h := NewUserHandler()
-	r.POST("/project/login/getCaptcha", h.getCaptcha)
+	r.POST("/project/login/getCaptcha", h.getCaptcha) //获取验证码
+	r.POST("/project/login/register", h.register)     //注册
+
 }

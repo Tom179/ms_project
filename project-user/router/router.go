@@ -8,6 +8,7 @@ import (
 	"net"
 	"test.com/project-common/discovery"
 	"test.com/project-common/logs"
+	"test.com/project-grpc/user/login"
 	"test.com/project-user/config"
 	loginServiceV1 "test.com/project-user/pkg/service/login.service.v1"
 )
@@ -31,19 +32,20 @@ func (*RegisterRouter) Route(ro Router, r *gin.Engine) { //调用接口中的路
 */
 var routers []Router
 
-type gRPCconfig struct {
+type gRPCconfig struct { //这个类用来表示一个grpc微服务模块
 	Addr         string
 	RegisterFunc func(server *grpc.Server)
 }
 
 func RegistGrpc() *grpc.Server {
-	c := gRPCconfig{Addr: config.C.GC.Addr,
+	ggg := gRPCconfig{Addr: config.C.GC.Addr,
 		RegisterFunc: func(g *grpc.Server) {
-			loginServiceV1.RegisterLoginServiceServer(g, loginServiceV1.NewLoginService()) //将自定义的Server注册到grpcServer中
+			login.RegisterLoginServiceServer(g, loginServiceV1.NewLoginService()) //将自定义的微服务结构体注册到grpcServer中
 		}} //定义方法,未调用
-	s := grpc.NewServer()
-	c.RegisterFunc(s)
-	lis, err := net.Listen("tcp", c.Addr)
+
+	s := grpc.NewServer() //创建grpc服务端，也就是上面说的grpcServer
+	ggg.RegisterFunc(s)
+	lis, err := net.Listen("tcp", ggg.Addr)
 	if err != nil {
 		log.Println("cannot listen")
 	}

@@ -4,6 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	common "test.com/project-common"
 	"test.com/project-user/config"
+	_ "test.com/project-user/internal/dao"
+	_ "test.com/project-user/internal/database/gorm"
 	"test.com/project-user/router"
 )
 

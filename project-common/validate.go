@@ -4,7 +4,12 @@ import "regexp"
 
 // 数据格式验证
 func VerifyMobile(phoneNumber string) bool {
-	pattern := `(13[0-9]|14[0-9]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[0-9])`
-	regex := regexp.MustCompile(pattern)
-	return regex.MatchString(phoneNumber)
+	return true
+}
+
+func VerifyEmailFormat(email string) bool {
+	//pattern := `\w+([-+.]\w+)@\w+([-.]\w+).\w+([-.]\w+)*` //匹配电子邮箱
+	pattern := `^[0-9a-z][_.0-9a-z-]{0,31}@([0-9a-z][0-9a-z-]{0,30}[0-9a-z].){1,4}[a-z]{2,4}$`
+	reg := regexp.MustCompile(pattern)
+	return reg.MatchString(email)
 }

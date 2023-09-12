@@ -45,3 +45,9 @@ services:
     ports:
       - ${ETCD_PORT}:2379
       - 2380:2380
+#  Project-User: #每个模块是一个容器，一个服务，有了它之后user不需要每次手动启动
+#    container_name: project-user #容器
+#    image: project-user:latest #镜像
+#    ports:
+#      - 8080:8080
+#      - 8881:8881

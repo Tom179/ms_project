@@ -1,4 +1,4 @@
-package repo
+package repo //repo包用于定义各种存储接口
 
 import (
 	"context"

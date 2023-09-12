@@ -1,8 +1,10 @@
 go 1.19
 
-//use所有的包名
+//use所有的大的包名
 use (
 	./project-api
 	./project-common
 	./project-user
+	./project-grpc
 )
+

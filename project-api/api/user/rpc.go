@@ -8,10 +8,10 @@ import (
 	"test.com/project-api/config"
 	"test.com/project-common/discovery"
 	"test.com/project-common/logs"
-	loginServiceV1 "test.com/project-user/pkg/service/login.service.v1"
+	"test.com/project-grpc/user/login"
 )
 
-var LoginServiceClient loginServiceV1.LoginServiceClient //引用这个客户端可以远程调用微服务
+var LoginServiceClient login.LoginServiceClient //引用这个客户端可以远程调用微服务
 
 // 调用grpc服务
 func InitRpcUserClient() {
@@ -26,5 +26,5 @@ func InitRpcUserClient() {
 		log.Fatalf("连接server失败:%v", err)
 	}
 
-	LoginServiceClient = loginServiceV1.NewLoginServiceClient(conn)
+	LoginServiceClient = login.NewLoginServiceClient(conn) //创建grpc客户端
 }
