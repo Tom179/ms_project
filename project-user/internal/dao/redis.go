@@ -8,7 +8,6 @@ import (
 )
 
 var Rc *RedisCache //内部单例
-
 type RedisCache struct {
 	rdb *redis.Client
 }

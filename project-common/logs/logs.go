@@ -1,6 +1,6 @@
 package logs //日志:用zap库写日志、再用lumberjack库分割日志
 import (
-	"github.com/natefinch/lumberjack"
+	"github.com/natefinch/lumberjack" //将日志存储到文件的工具
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"

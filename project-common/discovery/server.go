@@ -18,9 +18,11 @@ type Server struct { //要注册的服务
 
 func BuildPrefix(info Server) string { //返回:服务名-版本
 	if info.Version == "" {
-		return fmt.Sprintf("%s", info.Name)
+		return fmt.Sprintf("/%s/", info.Name)
 	}
-	return fmt.Sprintf("%s%s", info.Name, info.Version)
+
+	fmt.Printf("version有值：", info.Version)
+	return fmt.Sprintf("/%s/%s/", info.Name, info.Version)
 }
 
 func BuildRegPath(info Server) string { //返回:服务名-版本 服务地址
@@ -41,7 +43,9 @@ func SplitPath(path string) (Server, error) {
 	if len(strs) == 0 {
 		return info, errors.New("invalid path")
 	}
+	//fmt.Println("拆分地址为:", strs)
 	info.Addr = strs[len(strs)-1] //拆分出服务地址返回一个新的服务实例（只实例化了地址）
+	//fmt.Println("strs[len(strs)-1]拆分地址为:", info.Addr)
 	return info, nil
 }
 

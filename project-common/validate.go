@@ -4,7 +4,13 @@ import "regexp"
 
 // 数据格式验证
 func VerifyMobile(phoneNumber string) bool {
-	return true
+	regex := `^1\d{10}$`
+	match, err := regexp.MatchString(regex, phoneNumber)
+	if err != nil {
+		return false
+	}
+
+	return match
 }
 
 func VerifyEmailFormat(email string) bool {

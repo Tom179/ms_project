@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
@@ -38,7 +39,7 @@ func NewRegister(etcdAddrs []string, logger *zap.Logger) *Register { //传入etc
 }
 
 // Register a service
-func (r *Register) RegistService(srvInfo Server, ttl int64) (chan<- struct{}, error) {
+func (r *Register) RegistService(srvInfo Server, ttl int64) (chan<- struct{}, error) { //传入要注册的服务
 	var err error
 
 	if strings.Split(srvInfo.Addr, ":")[0] == "" {
@@ -53,6 +54,7 @@ func (r *Register) RegistService(srvInfo Server, ttl int64) (chan<- struct{}, er
 	}
 
 	r.srvInfo = srvInfo
+	fmt.Println("r.servInfo为:", r.srvInfo)
 	r.srvTTL = ttl
 
 	if err = r.register(); err != nil { //注册

@@ -11,7 +11,6 @@ import (
 
 func main() {
 	r := gin.Default()
-
 	//router.InitRouter(r)
 	gc := router.RegistGrpc()   //注册grpc
 	router.RegisterEtcdServer() //grpc服务注册到etcd

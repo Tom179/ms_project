@@ -23,7 +23,7 @@ func (*UserHandler) getCaptcha(c *gin.Context) { //路由映射到此方法
 	result := &common.Result{}
 	mobile := c.PostForm("mobile")
 	//fmt.Println("mobile", mobile)
-	//👇发起grpc调用（前提是已经将loginServiceClient实例化）
+	//👇开启grpc链接，前提是已经将loginServiceClient实例化）
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	rsp, err := LoginServiceClient.GetCaptcha(ctx, &login.CaptchaRequest{Mobile: mobile})
@@ -60,7 +60,7 @@ func (*UserHandler) register(c *gin.Context) {
 		c.JSON(http.StatusOK, result.Fail(http.StatusBadRequest, "结构体复制错误"))
 	}
 
-	_, err = LoginServiceClient.Register(ctx, msg)
+	_, err = LoginServiceClient.Register(ctx, msg) //这才是具体的grpc调用啊
 
 	//gRPC调用
 	if err != nil {

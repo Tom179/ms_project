@@ -18,7 +18,7 @@ import (
 	"time"
 )
 
-type LoginService struct { //登录微服务【类】。
+type LoginService struct { //注册登录微服务【类】。
 	// 微服务Server 1.需要继承Unimplemented_xxx类(_grpc.pb.go文件中的),然后这个类还需要
 	//2.实现你proto文件中定义的那些函数。
 	//那么这个微服务类才是可以注册到你grpcServer中的Server
@@ -42,9 +42,8 @@ func (lg *LoginService) GetCaptcha(c context.Context, msg *login.CaptchaRequest)
 		return nil /*model.IllegalMobile*/, errs.GrpcError(model.IllegalMobile)
 	}
 	code := RandomCaptCha()
-
-	go func() { //发 送短信
-		zap.L().Info("api发送短信 info") //假设发送成功
+	go func() { //发送短信
+		zap.L().Info("api发送短信 info") //模拟发送成功，输出到日志
 		//logs.LG.Debug("api发送短信 debug")
 		//zap.L().Error("api发送短信 error")
 		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)

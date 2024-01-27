@@ -1,7 +1,6 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/resolver"
 	"log"
@@ -13,10 +12,11 @@ import (
 	loginServiceV1 "test.com/project-user/pkg/service/login.service.v1"
 )
 
+/*
 type Router interface { //路由的统一规范和接口，需实现
 	SetRoute(r *gin.Engine)
 }
-
+*/
 /*
 type RegisterRouter struct { //某个类
 }
@@ -30,7 +30,7 @@ func (*RegisterRouter) Route(ro Router, r *gin.Engine) { //调用接口中的路
 		ro.Route(r)
 	}
 */
-var routers []Router
+//var routers []Router
 
 type gRPCconfig struct { //这个类用来表示一个grpc微服务模块
 	Addr         string

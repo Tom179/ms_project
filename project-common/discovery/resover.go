@@ -55,10 +55,13 @@ func (r *Resolver) Build(target resolver.Target, cc resolver.ClientConn, opts re
 	// 而build函数中的target参数，就是grpc目标地址中“etcd”协议方案的后一部分
 	//对于请求目标地址，"etcd://localhost:2379/myservice"，target.URL.Path 就是 /myservice。
 	//target.URL.Host就是 localhost:2379。
+	fmt.Println("target.url.host:", target.URL.Host)
+	fmt.Println("target.url.path:", target.URL.Path)
 
 	r.cc = cc
-	r.keyPrifix = BuildPrefix(Server{Name: target.URL.Path, Version: target.URL.Host}) //填充keyPrifix字段：服务名-服务版本
+	r.keyPrifix = BuildPrefix(Server{Name: target.URL.Host, Version: target.URL.Path}) //填充keyPrifix字段：服务名-服务版本
 	fmt.Println("target.URL.Path:", target.URL.Path+" "+"target.URL.HOST:", target.URL.Host)
+	fmt.Println("resolver解析器的keyPrefix为", r.keyPrifix)
 	if _, err := r.start(); err != nil {
 		return nil, err
 	}
@@ -124,6 +127,7 @@ func (r *Resolver) update(events []*clientv3.Event) { //传入watch函数返回�
 
 		switch ev.Type {
 		case mvccpb.PUT:
+			fmt.Println("执行更新/添加操作")
 			info, err = ParseValue(ev.Kv.Value)
 			if err != nil {
 				continue
@@ -133,17 +137,24 @@ func (r *Resolver) update(events []*clientv3.Event) { //传入watch函数返回�
 				r.srvAddrsList = append(r.srvAddrsList, addr)
 				r.cc.UpdateState(resolver.State{Addresses: r.srvAddrsList})
 			}
-		case mvccpb.DELETE:
-			info, err = SplitPath(string(ev.Kv.Key))
+		case mvccpb.DELETE: //没有成功删除？
+			fmt.Println("要删除的键为:", string(ev.Kv.Key))
+			fmt.Println("要删除的值为:", string(ev.Kv.Value))
+			info, err = SplitPath(string(ev.Kv.Key)) //传入参数为：user1.0.0127.0.0.1:8881
 			if err != nil {
 				continue
 			}
 			addr := resolver.Address{Addr: info.Addr}
-			if s, ok := Remove(r.srvAddrsList, addr); ok {
+
+			fmt.Println("删除之前服务列表为:", r.srvAddrsList)      //删除之前服务列表为: [{Addr: "0.0.0.0:8881", ServerName: "", } {Addr: "127.0.0.1:8881", ServerName: "", }],可以看到跟上面的格式不同，所以不行。
+			if s, ok := Remove(r.srvAddrsList, addr); ok { //为什么返回了false,因为目标元素根本就没在数组里面。问题来了，传入的目标元素是什么呢？
+				fmt.Println("完成删除操作")
 				r.srvAddrsList = s
+				fmt.Println("删除成功,删除后的地址为:", s)
 				r.cc.UpdateState(resolver.State{Addresses: r.srvAddrsList})
 			}
 		}
+		fmt.Println("服务地址更新", r.srvAddrsList)
 	}
 }
 
@@ -176,6 +187,6 @@ func (r *Resolver) sync() error { //发现服务
 		r.srvAddrsList = append(r.srvAddrsList, addr) //添加所有服务
 	}
 
-	r.cc.UpdateState(resolver.State{Addresses: r.srvAddrsList}) //将服务真正更新进grpc
+	r.cc.UpdateState(resolver.State{Addresses: r.srvAddrsList}) //将服务地址真正更新进grpc
 	return nil
 }

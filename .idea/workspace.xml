@@ -5,45 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7880dfdd-d5a1-4e3a-8353-9bc8e718c334" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/project-grpc/go.mod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-grpc/user/login/login_service.pb.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-user/api/proto/gen.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-user/internal/dao/member.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-user/internal/dao/organization.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-user/internal/data/member/member.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-user/internal/data/organization/organization.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-user/internal/database/gorm/gorm.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-user/internal/repo/member.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-user/internal/repo/organization.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/run.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.work" beforeDir="false" afterPath="$PROJECT_DIR$/go.work" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/debug/project-debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/debug/project-debug.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/error/project-error.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/error/project-error.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/info/project-info.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/info/project-info.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/api/user/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/user/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/api/user/rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/user/rpc.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-api/api/user/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/user/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-api/target/project-api" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/target/project-api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-common/discovery/discovery.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/discovery/discovery.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-common/discovery/resover.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/discovery/resover.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-common/discovery/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/discovery/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-common/logs/logs.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/logs/logs.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-common/validate.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/validate.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/api/proto/gen/login_service.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/api/proto/gen/login_service.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/api/proto/gen/login_service_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/api/proto/gen/login_service_grpc.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/api/proto/login_service.proto" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/api/proto/login_service.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/config/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/config/config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/internal/dao/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/internal/dao/redis.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-user/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/pkg/dao/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/internal/dao/redis.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/pkg/model/code.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/pkg/model/code.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/pkg/repo/cache.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/internal/repo/cache.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-grpc/user/login/login_service_grpc.pb.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-user/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-user/target/project-user" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/target/project-user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.bat" beforeDir="false" afterPath="$PROJECT_DIR$/run.bat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +62,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/GoWorks/project/ms_project/project-user/internal/repo&quot;
+    &quot;last_opened_file_path&quot;: &quot;D:/GoWorks/project/ms_project&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -101,7 +80,7 @@
       <recent name="D:\GoWorks\project\ms_project\project-user" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.go build test.com/project-api">
+  <component name="RunManager" selected="Go Build.go build test.com/project-user">
     <configuration name="go build project-api" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="ms_project" />
       <working_directory value="$PROJECT_DIR$/project-api" />
@@ -129,10 +108,19 @@
       <filePath value="$PROJECT_DIR$/project-user/main.go" />
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yaml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build test.com/project-api" />
         <item itemvalue="Go Build.go build test.com/project-user" />
+        <item itemvalue="Go Build.go build test.com/project-api" />
+        <item itemvalue="Docker.docker-compose.yaml: Compose Deployment" />
         <item itemvalue="Go Build.go build project-api" />
       </list>
     </recent_temporary>
