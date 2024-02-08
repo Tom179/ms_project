@@ -19,6 +19,7 @@ func InitRpcUserClient() {
 	resolver.Register(etcdRegister) //注册解析器构造器
 
 	///////版本1.0.0
+	//这个函数是grpc连接，并不实际的grpc调用
 	conn, err := grpc.Dial("etcd://user", grpc.WithTransportCredentials(insecure.NewCredentials())) //地址直接填的名字，由resolver来解析，resolver里builder实现的etcd方式
 	//自动调用builder接口中的Scheme函数和build函数，build函数通过target.URL.path和target.URL.host【也就是服务名和服务地址】来获取etcd的服务信息。
 

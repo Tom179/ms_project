@@ -3,6 +3,7 @@ package dao
 import (
 	"context"
 	"test.com/project-user/internal/data/member"
+	"test.com/project-user/internal/database"
 	"test.com/project-user/internal/database/gorm"
 )
 
@@ -35,6 +36,8 @@ func (m *MemberDao) GetMemberByMobile(ctx context.Context, mobile string) (bool,
 	return count > 0, err
 }
 
-func (m *MemberDao) SaveMember(ctx context.Context, member *member.Member) error { //增加
-	return m.conn.Session(ctx).Create(member).Error
+func (m *MemberDao) SaveMember(conn database.DbConn, ctx context.Context, member *member.Member) error { //增加
+	m.conn = conn.(*gorm.GormConn) //因为是数据库连接接口的具体实现，所以将接口转为gorm的数据库连接，向下转型
+
+	return m.conn.Tx(ctx).Create(member).Error
 }

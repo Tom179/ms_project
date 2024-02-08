@@ -37,12 +37,33 @@ func GetDB() *gorm.DB {
 
 type GormConn struct { //存放数据库连接的结构体
 	db *gorm.DB
+	tx *gorm.DB
 }
 
 func New() *GormConn { //获取数据库连接
-	return &GormConn{GetDB()}
+	return &GormConn{db: GetDB()}
+}
+
+func NewTran() *GormConn {
+	return &GormConn{db: GetDB(), tx: GetDB()}
 }
 
 func (g *GormConn) Session(ctx context.Context) *gorm.DB { //新建session,为什么要单独封装结构体来写session方法？
 	return g.db.Session(&gorm.Session{Context: ctx})
+}
+
+func (g *GormConn) Tx(ctx context.Context) *gorm.DB {
+	return g.tx.WithContext(ctx)
+}
+
+func (g *GormConn) Begin() { //每次事务都要重新获取新的连接
+	g.tx = GetDB().Begin()
+}
+
+func (g *GormConn) RollBack() {
+	g.tx.Rollback()
+}
+
+func (g *GormConn) Commit() {
+	g.tx.Commit()
 }

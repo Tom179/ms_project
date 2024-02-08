@@ -2,6 +2,8 @@ package login_service_v1
 
 import (
 	"context"
+	"fmt"
+	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"
 	"log"
 	"math/rand"
@@ -13,6 +15,8 @@ import (
 	"test.com/project-user/internal/dao"
 	"test.com/project-user/internal/data/member"
 	"test.com/project-user/internal/data/organization"
+	"test.com/project-user/internal/database"
+	"test.com/project-user/internal/database/tran"
 	"test.com/project-user/internal/repo"
 	"test.com/project-user/pkg/model"
 	"time"
@@ -25,7 +29,8 @@ type LoginService struct { //注册登录微服务【类】。
 	login.UnimplementedLoginServiceServer                       //实现grpc
 	memberRepo                            repo.MemberRepo       //member表
 	organizationRepo                      repo.OrganizationRepo //organization表
-	cache                                 repo.Cache            //自己新增参数,这是一个自定义的存储
+	transaction                           tran.Transaction
+	cache                                 repo.Cache //自己新增参数,这是一个自定义的缓存
 }
 
 func NewLoginService() *LoginService {
@@ -33,6 +38,7 @@ func NewLoginService() *LoginService {
 		cache:            dao.Rc,
 		memberRepo:       dao.NewMemberDao(),
 		organizationRepo: dao.NewOrganizationDao(),
+		transaction:      dao.NewTransaction(), //!!!!!!事务实现
 	}
 }
 
@@ -74,6 +80,10 @@ func (lg *LoginService) Register(ctx context.Context, msg *login.RegisterRequest
 	c := context.Background()
 	//校验验证码，是否已经存在
 	redisCode, err := lg.cache.Get(c, "REGISTER:"+msg.Mobile)
+	if err == redis.Nil {
+		//zap.L().Error()
+		return nil, errs.GrpcError(model.CaptchaNotExist)
+	}
 	if err != nil {
 		zap.L().Error("redis查库出错:", zap.Error(err))
 		return nil, errs.GrpcError(model.InCorrectCaptcha)
@@ -123,10 +133,6 @@ func (lg *LoginService) Register(ctx context.Context, msg *login.RegisterRequest
 		LastLoginTime: time.Now().UnixMilli(),
 		Status:        1, //model.Normal
 	}
-	if err := lg.memberRepo.SaveMember(c, mem); err != nil {
-		zap.L().Error("register save member db error", zap.Error(err))
-	}
-	//业务：创建一个人的账号再自动给他创建个人组织
 	org := &organization.Organization{
 		Name:       mem.Name + "个人组织",
 		MemberId:   mem.Id,
@@ -134,11 +140,22 @@ func (lg *LoginService) Register(ctx context.Context, msg *login.RegisterRequest
 		Personal:   1, //model.Personal
 		Avatar:     "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.dtstatic.com%2Fuploads%2Fblog%2F202103%2F31%2F20210331160001_9a852.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.dtstatic.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1673017724&t=ced22fc74624e6940fd6a89a21d30cc5",
 	}
-	err = lg.organizationRepo.SaveOrganization(c, org)
-	if err != nil {
-		zap.L().Error("register SaveOrganization db err", zap.Error(err))
-		return nil, model.DBError //数据库错误
-	}
 
-	return &login.RegisterResponse{}, nil
+	err = lg.transaction.Action(func(conn database.DbConn) error { //事务：保障操作的原子性
+		if err := lg.memberRepo.SaveMember(conn, c, mem); err != nil {
+			fmt.Println("出现db错误")
+			zap.L().Error("register save member db error", zap.Error(err))
+			return errs.GrpcError(model.DBError)
+		}
+		//业务：创建一个人的账号再自动给他创建个人组织
+		err = lg.organizationRepo.SaveOrganization(conn, c, org)
+		if err != nil {
+			zap.L().Error("register SaveOrganization db err", zap.Error(err))
+			return errs.GrpcError(model.DBError) //数据库错误
+		}
+
+		return nil
+	})
+
+	return &login.RegisterResponse{}, err
 }

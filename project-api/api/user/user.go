@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
 	"net/http"
@@ -60,11 +61,14 @@ func (*UserHandler) register(c *gin.Context) {
 		c.JSON(http.StatusOK, result.Fail(http.StatusBadRequest, "结构体复制错误"))
 	}
 
+	fmt.Println("准备grpc调用")
 	_, err = LoginServiceClient.Register(ctx, msg) //这才是具体的grpc调用啊
+	fmt.Println("接收到的grpc调用的返回值err为: ", err)
 
 	//gRPC调用
 	if err != nil {
 		code, msg := errs.ParseGrpcError(err)
+		fmt.Println("grpc客户端接收到的code和msg分别为：", code, " ", msg)
 		c.JSON(http.StatusOK, result.Fail(code, msg))
 		return //出现异常，直接返回
 	}
