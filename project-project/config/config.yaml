@@ -1,0 +1,34 @@
+server:
+  name: "project-user"
+  addr: "127.0.0.1:8080"#改为docker后不能127.0.0.1了
+zap:
+  DebugFileName: "D:\\GoWorks\\project\\ms_project\\logs\\debug\\project-debug.log"#本机："D:\\GoWorks\\project\\ms_project\\logs\\debug\\project-debug.log"，改为docker后也要改
+  InfoFileName: "D:\\GoWorks\\project\\ms_project\\logs\\info\\project-info.log"
+  WarnFileName: "D:\\GoWorks\\project\\ms_project\\logs\\error\\project-error.log"
+  MaxSize: 500
+  MaxAge: 28
+  MaxBackups: 3
+redis:
+  host: "localhost"#用的docker中的容器名
+  port: 6379
+  password: ""
+  db: 0
+grpc:
+  addr: "127.0.0.1:8881"#原来本机："127.0.0.1:8881"
+  name: "user"
+  version: "1.0.0"
+  weight: 2
+etcd:
+  addrs:
+    - "127.0.0.1:2379"#原来："127.0.0.1:2379"
+mysql:
+  username: root
+  password: root
+  host: 127.0.0.1
+  port: 3309
+  db: msproject
+jwt:
+  accessExp: 7 #天
+  refreshExp: 14
+  accessSecret: msproject
+  refreshSecret: ms_project
