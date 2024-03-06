@@ -16,6 +16,6 @@ func main() {
 
 	common.Run(r, config.C.SC.Name, config.C.SC.Addr, nil)
 
-	//r.Run(":8080")
+	//r.Run(":80")
 	//fmt.Println("后续操作")
 }

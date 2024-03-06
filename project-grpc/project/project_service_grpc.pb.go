@@ -4,7 +4,7 @@
 // - protoc             v4.22.3
 // source: project_service.proto
 
-package project_service_v1
+package project
 
 import (
 	context "context"

@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"test.com/project-user/internal/database"
-	"test.com/project-user/internal/database/gorm"
+	"test.com/project-project/internal/database"
+	"test.com/project-project/internal/database/gorm"
 )
 
 func NewTransaction() *TransactionImpl {

@@ -1,3 +1,3 @@
-module project-project
+module test.com/project-project
 
 go 1.19

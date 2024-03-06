@@ -1,4 +1,4 @@
-package gorm //获取数据库连接
+package gorms //获取数据库连接
 
 import (
 	"context"

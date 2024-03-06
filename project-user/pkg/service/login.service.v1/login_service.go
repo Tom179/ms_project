@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
+	"github.com/jinzhu/copier"
 	"go.uber.org/zap"
 	"log"
 	"math/rand"
@@ -11,7 +12,9 @@ import (
 	common "test.com/project-common"
 	"test.com/project-common/encrypts"
 	"test.com/project-common/errs"
+	"test.com/project-common/jwts"
 	"test.com/project-grpc/user/login"
+	"test.com/project-user/config"
 	"test.com/project-user/internal/dao"
 	"test.com/project-user/internal/data/member"
 	"test.com/project-user/internal/data/organization"
@@ -122,10 +125,11 @@ func (lg *LoginService) Register(ctx context.Context, msg *login.RegisterRequest
 	}
 
 	//执行业务，将数据存入数据库：member和组织表
-	pwd := encrypts.Md5(msg.Password)
+	//pwd := encrypts.Md5(msg.Password)
+	fmt.Println("grpc调用方传的password:", msg.Password)
 	mem := &member.Member{
 		Account:       msg.Name,
-		Password:      pwd,
+		Password:      msg.Password,
 		Name:          msg.Name,
 		Mobile:        msg.Mobile,
 		Email:         msg.Email,
@@ -133,19 +137,19 @@ func (lg *LoginService) Register(ctx context.Context, msg *login.RegisterRequest
 		LastLoginTime: time.Now().UnixMilli(),
 		Status:        1, //model.Normal
 	}
-	org := &organization.Organization{
-		Name:       mem.Name + "个人组织",
-		MemberId:   mem.Id,
-		CreateTime: time.Now().UnixMilli(),
-		Personal:   1, //model.Personal
-		Avatar:     "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.dtstatic.com%2Fuploads%2Fblog%2F202103%2F31%2F20210331160001_9a852.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.dtstatic.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1673017724&t=ced22fc74624e6940fd6a89a21d30cc5",
-	}
-
 	err = lg.transaction.Action(func(conn database.DbConn) error { //事务：保障操作的原子性
 		if err := lg.memberRepo.SaveMember(conn, c, mem); err != nil {
 			fmt.Println("出现db错误")
 			zap.L().Error("register save member db error", zap.Error(err))
 			return errs.GrpcError(model.DBError)
+		}
+
+		org := &organization.Organization{
+			Name:       mem.Name + "个人组织",
+			MemberId:   mem.Id,
+			CreateTime: time.Now().UnixMilli(),
+			Personal:   1, //model.Personal
+			Avatar:     "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.dtstatic.com%2Fuploads%2Fblog%2F202103%2F31%2F20210331160001_9a852.thumb.1000_0.jpg&refer=http%3A%2F%2Fc-ssl.dtstatic.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1673017724&t=ced22fc74624e6940fd6a89a21d30cc5",
 		}
 		//业务：创建一个人的账号再自动给他创建个人组织
 		err = lg.organizationRepo.SaveOrganization(conn, c, org)
@@ -158,4 +162,52 @@ func (lg *LoginService) Register(ctx context.Context, msg *login.RegisterRequest
 	})
 
 	return &login.RegisterResponse{}, err
+}
+
+func (lg *LoginService) Login(ctx context.Context, msg *login.LoginMessage) (*login.LoginResponse, error) { //实现微服务login
+	c := context.Background()
+	//pwd := encrypts.Md5(msg.Password)
+	mem, err := lg.memberRepo.FindMember(c, msg.Account, msg.Password) //因为注册前端已经做了加密
+	if err != nil {
+		zap.L().Error("查询登录用户失败，数据库错误", zap.Error(err))
+		return nil, errs.GrpcError(model.DBError)
+	}
+	if mem == nil { //注意为什么要接收判断这2个错误
+		return nil, errs.GrpcError(model.AccuntAndPwdError)
+	}
+	memMsg := &login.MemberMessage{}
+	err = copier.Copy(memMsg, mem)
+	memMsg.Code, _ = encrypts.EncryptInt64(mem.Id, model.AESkey)
+
+	orgs, err := lg.organizationRepo.FindOrganizationByMemId(c, mem.Id)
+	if err != nil {
+		zap.L().Error("查询登录用户的组织失败，数据库错误", zap.Error(err))
+		return nil, errs.GrpcError(model.DBError)
+	}
+	var orgMessage []*login.OrganizationMessage
+	err = copier.Copy(&orgMessage, orgs)
+	for _, v := range orgMessage {
+		v.Code, _ = encrypts.EncryptInt64(v.Id, model.AESkey)
+	}
+
+	exp := time.Duration(config.C.JwtConfig.AccessExp) * 3600 * 24 * time.Second //与time.duration相乘需要匹配类型
+	rExp := time.Duration(config.C.JwtConfig.RefreshExp) * 3600 * 24 * time.Second
+	//fmt.Println(config.C.JwtConfig.AccessSecret)
+	//fmt.Println(config.C.JwtConfig.RefreshSecret)
+
+	token := jwts.CreateToken(string(mem.Id), exp, config.C.JwtConfig.AccessSecret, rExp, config.C.JwtConfig.RefreshSecret)
+
+	tokenList := &login.TokenMessage{
+		AccessToken:    token.AccessToken,
+		RefreshToken:   token.RefreshToken,
+		AccessTokenExp: token.AccessExp,
+		TokenType:      "bearer",
+	}
+	//token:=jwts.CreateToken(string(mem.Id),)
+	resp := &login.LoginResponse{
+		Member:           memMsg,
+		OrganizationList: orgMessage,
+		TokenList:        tokenList,
+	}
+	return resp, nil
 }

@@ -62,6 +62,7 @@ func (*UserHandler) register(c *gin.Context) {
 	}
 
 	fmt.Println("准备grpc调用")
+	fmt.Println("前端传给后端的password为:", msg.Password)
 	_, err = LoginServiceClient.Register(ctx, msg) //这才是具体的grpc调用啊
 	fmt.Println("接收到的grpc调用的返回值err为: ", err)
 
@@ -74,4 +75,85 @@ func (*UserHandler) register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, result.Success(""))
+}
+
+func (*UserHandler) login(c *gin.Context) {
+	result := &common.Result{}
+	req := LoginReq{}
+
+	err := c.ShouldBind(&req)
+	if err != nil {
+		c.JSON(http.StatusOK, result.Fail(http.StatusBadRequest, "参数格式有误"))
+		return
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+
+	msg := &login.LoginMessage{}
+	err = copier.Copy(msg, req)
+	if err != nil {
+		c.JSON(http.StatusOK, result.Fail(http.StatusBadRequest, "copy有误"))
+		return
+	}
+
+	//grpc调用
+	loginResp, err := LoginServiceClient.Login(ctx, msg)
+	if err != nil {
+		code, msg := errs.ParseGrpcError(err)
+		c.JSON(http.StatusOK, result.Fail(code, msg))
+		return
+	}
+
+	rsp := &LoginRsp{}
+
+	err = copier.Copy(rsp, loginResp)
+	if err != nil {
+		c.JSON(http.StatusOK, result.Fail(http.StatusBadRequest, "copy出错"))
+	}
+
+	c.JSON(http.StatusOK, result.Success(rsp))
+}
+
+func (*UserHandler) index(c *gin.Context) {
+
+}
+
+type LoginReq struct {
+	Account  string `json:"account" form:"account"`
+	Password string `json:"password" form:"password"`
+}
+
+type LoginRsp struct {
+	Member           Member             `json:"member"`
+	TokenList        TokenList          `json:"tokenList"`
+	OrganizationList []OrganizationList `json:"organizationList"`
+}
+type Member struct {
+	//Id     int64  `json:"id"`
+	Code   string `json:"code"` //对id进行加密，可解密
+	Name   string `json:"name"`
+	Mobile string `json:"mobile"`
+	Status int    `json:"status"`
+}
+
+type TokenList struct {
+	AccessToken    string `json:"accessToken"`
+	RefreshToken   string `json:"refreshToken"`
+	TokenType      string `json:"tokenType"`
+	AccessTokenExp int64  `json:"accessTokenExp"`
+}
+
+type OrganizationList struct {
+	//Id          int64  `json:"id"`
+	Code        string `json:"code"` //对id进行加密
+	Name        string `json:"name"`
+	Avatar      string `json:"avatar"`
+	Description string `json:"description"`
+	MemberId    int64  `json:"memberId"`
+	CreateTime  int64  `json:"createTime"`
+	Personal    int32  `json:"personal"`
+	Address     string `json:"address"`
+	Province    int32  `json:"province"`
+	City        int32  `json:"city"`
+	Area        int32  `json:"area"`
 }

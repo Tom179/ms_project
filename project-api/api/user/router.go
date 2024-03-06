@@ -20,5 +20,6 @@ func (*RouterUser) SetRoute(r *gin.Engine) { //实现路由接口
 	h := NewUserHandler()
 	r.POST("/project/login/getCaptcha", h.getCaptcha) //获取验证码
 	r.POST("/project/login/register", h.register)     //注册
-
+	r.POST("/project/login", h.login)
+	//r.POST("/project/index", h.index)
 }

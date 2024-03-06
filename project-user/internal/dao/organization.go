@@ -8,12 +8,12 @@ import (
 )
 
 type OrganizationDao struct {
-	conn *gorm.GormConn
+	conn *gorms.GormConn
 }
 
 func NewOrganizationDao() *OrganizationDao {
 	return &OrganizationDao{
-		conn: gorm.New(),
+		conn: gorms.New(),
 	}
 }
 
@@ -24,6 +24,6 @@ func (o *OrganizationDao) FindOrganizationByMemId(ctx context.Context, memId int
 }
 
 func (o *OrganizationDao) SaveOrganization(conn database.DbConn, ctx context.Context, org *organization.Organization) error {
-	o.conn = conn.(*gorm.GormConn)
+	o.conn = conn.(*gorms.GormConn)
 	return o.conn.Tx(ctx).Create(org).Error
 }

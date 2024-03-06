@@ -1,10 +1,10 @@
 server:
-  name: "project-user"
-  addr: "127.0.0.1:8080"#改为docker后不能127.0.0.1了
+  name: "project-project"
+  addr: "127.0.0.1:8081"
 zap:
-  DebugFileName: "D:\\GoWorks\\project\\ms_project\\logs\\debug\\project-debug.log"#本机："D:\\GoWorks\\project\\ms_project\\logs\\debug\\project-debug.log"，改为docker后也要改
-  InfoFileName: "D:\\GoWorks\\project\\ms_project\\logs\\info\\project-info.log"
-  WarnFileName: "D:\\GoWorks\\project\\ms_project\\logs\\error\\project-error.log"
+  DebugFileName: "D:\\GoWorks\\project\\ms_project\\logs\\debug\\projectService-debug.log"#本机："D:\\GoWorks\\project\\ms_project\\logs\\debug\\project-debug.log"，改为docker后也要改
+  InfoFileName: "D:\\GoWorks\\project\\ms_project\\logs\\info\\projectService-info.log"
+  WarnFileName: "D:\\GoWorks\\project\\ms_project\\logs\\error\\projectService-error.log"
   MaxSize: 500
   MaxAge: 28
   MaxBackups: 3
@@ -14,8 +14,8 @@ redis:
   password: ""
   db: 0
 grpc:
-  addr: "127.0.0.1:8881"#原来本机："127.0.0.1:8881"
-  name: "user"
+  addr: "127.0.0.1:8882"
+  name: "project"
   version: "1.0.0"
   weight: 2
 etcd:

@@ -6,9 +6,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"test.com/project-user/config"
-	"test.com/project-user/internal/data/member"
-	"test.com/project-user/internal/data/organization"
+	"test.com/project-project/config"
 )
 
 var _db *gorm.DB
@@ -28,7 +26,7 @@ func init() { //获取配置，再根据配置参数连接MySQL,给_db赋值
 		panic("连接数据库失败, error=" + err.Error())
 	}
 
-	_db.AutoMigrate(&member.Member{}, &organization.Organization{}) //自动建表
+	//_db.AutoMigrate(&member.Member{}, &organization.Organization{}) //自动建表
 }
 
 func GetDB() *gorm.DB {

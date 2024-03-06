@@ -7,7 +7,7 @@ import (
 
 func NewTransaction() *TransactionImpl {
 	return &TransactionImpl{
-		gorm.NewTran(),
+		gorms.NewTran(),
 	}
 }
 

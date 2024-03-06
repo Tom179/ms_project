@@ -2,18 +2,19 @@ package dao
 
 import (
 	"context"
+	"gorm.io/gorm"
 	"test.com/project-user/internal/data/member"
 	"test.com/project-user/internal/database"
 	"test.com/project-user/internal/database/gorm"
 )
 
 type MemberDao struct { //实现接口
-	conn *gorm.GormConn
+	conn *gorms.GormConn
 }
 
 func NewMemberDao() *MemberDao { //新建member数据库操作类
 	return &MemberDao{
-		gorm.New(),
+		gorms.New(),
 	}
 }
 
@@ -37,7 +38,16 @@ func (m *MemberDao) GetMemberByMobile(ctx context.Context, mobile string) (bool,
 }
 
 func (m *MemberDao) SaveMember(conn database.DbConn, ctx context.Context, member *member.Member) error { //增加
-	m.conn = conn.(*gorm.GormConn) //因为是数据库连接接口的具体实现，所以将接口转为gorm的数据库连接，向下转型
+	m.conn = conn.(*gorms.GormConn) //因为是数据库连接接口的具体实现，所以将接口转为gorm的数据库连接，向下转型
 
 	return m.conn.Tx(ctx).Create(member).Error
+}
+
+func (m *MemberDao) FindMember(ctx context.Context, account string, password string) (*member.Member, error) {
+	var mem *member.Member
+	err := m.conn.Session(ctx).Where("account=? and password=?", account, password).First(&mem).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
+	return mem, err
 }

@@ -1,0 +1,17 @@
+{"level":"ERROR","time":"2024-03-07T01:09:38.242+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-03-07T01:24:37.254+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-03-07T01:25:12.512+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:25:34.771+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:26:01.144+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:26:07.283+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:26:31.721+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:26:37.849+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:26:43.991+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:26:52.153+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:27:06.518+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:27:14.714+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:27:24.976+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:27:41.432+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:27:43.489+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:27:49.667+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}
+{"level":"ERROR","time":"2024-03-07T01:27:51.732+0800","caller":"discovery/discovery.go:123","msg":"register failed","error":"etcdserver: requested lease not found"}

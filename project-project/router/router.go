@@ -7,30 +7,10 @@ import (
 	"net"
 	"test.com/project-common/discovery"
 	"test.com/project-common/logs"
-	"test.com/project-grpc/user/login"
+	project "test.com/project-grpc/project"
+	project_service_v1 "test.com/project-project/pkg/service/project.service.v1"
 	"test.com/project-user/config"
-	loginServiceV1 "test.com/project-user/pkg/service/login.service.v1"
 )
-
-/*
-type Router interface { //路由的统一规范和接口，需实现
-	SetRoute(r *gin.Engine)
-}
-*/
-/*
-type RegisterRouter struct { //某个类
-}
-
-	func NewRegistRouter() *RegisterRouter {
-		return &RegisterRouter{}
-	}
-
-func (*RegisterRouter) Route(ro Router, r *gin.Engine) { //调用接口中的路由实现方法
-
-		ro.Route(r)
-	}
-*/
-//var routers []Router
 
 type gRPCconfig struct { //这个类用来表示一个grpc微服务模块
 	Addr         string
@@ -40,7 +20,7 @@ type gRPCconfig struct { //这个类用来表示一个grpc微服务模块
 func RegistGrpc() *grpc.Server {
 	ggg := gRPCconfig{Addr: config.C.GC.Addr,
 		RegisterFunc: func(g *grpc.Server) {
-			login.RegisterLoginServiceServer(g, loginServiceV1.NewLoginService()) //将自定义的微服务结构体注册到grpcServer中
+			project.RegisterProjectServiceServer(g, project_service_v1.New())
 		}} //定义方法,未调用
 
 	s := grpc.NewServer() //创建grpc服务端，也就是上面说的grpcServer
@@ -65,10 +45,10 @@ func RegisterEtcdServer() {
 	resolver.Register(etcdRegister)
 	//这个resolver拿来干嘛？
 
-	info := discovery.Server{ //传入服务地址
-		Name:    config.C.GC.Name,    //user
-		Addr:    config.C.GC.Addr,    //127.0.0.1:8881
-		Version: config.C.GC.Version, //1.0.0
+	info := discovery.Server{ //project模块识别了user的配置..
+		Name:    config.C.GC.Name,
+		Addr:    config.C.GC.Addr,
+		Version: config.C.GC.Version,
 		Weight:  config.C.GC.Weight,
 	}
 
