@@ -25,6 +25,7 @@ message RegisterResponse{
 message LoginMessage {
   string account = 1;
   string password = 2;
+  string token=3;
 }
 message LoginResponse{
   MemberMessage member = 1;
@@ -71,4 +72,5 @@ service LoginService{
   rpc GetCaptcha(CaptchaRequest) returns(CaptchaResponse){}//获取验证码
   rpc Register(RegisterRequest) returns(RegisterResponse){}//注册
   rpc Login(LoginMessage) returns (LoginResponse) {}//登录
+  rpc TokenVerify(LoginMessage) returns (LoginResponse) {}
 }

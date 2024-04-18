@@ -1,0 +1,5 @@
+package MiddleWare
+
+func TokenVerify() {
+
+}
