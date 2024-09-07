@@ -5,13 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
-
-	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 // Register for grpc server
@@ -42,7 +41,7 @@ func NewRegister(etcdAddrs []string, logger *zap.Logger) *Register { //传入etc
 func (r *Register) RegistService(srvInfo Server, ttl int64) (chan<- struct{}, error) { //传入要注册的服务
 	var err error
 
-	if strings.Split(srvInfo.Addr, ":")[0] == "" {
+	if strings.Split(srvInfo.Addr, ":")[0] == "" { //验证服务地址格式
 		return nil, errors.New("invalid ip")
 	}
 

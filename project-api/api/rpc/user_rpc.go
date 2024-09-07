@@ -1,4 +1,4 @@
-package user
+package rpc
 
 import (
 	"google.golang.org/grpc"
@@ -8,7 +8,7 @@ import (
 	"test.com/project-api/config"
 	"test.com/project-common/discovery"
 	"test.com/project-common/logs"
-	"test.com/project-grpc/user/login"
+	login "test.com/project-grpc/user/login"
 )
 
 var LoginServiceClient login.LoginServiceClient //引用这个客户端可以远程调用微服务

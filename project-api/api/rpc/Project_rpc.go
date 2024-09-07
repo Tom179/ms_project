@@ -1,4 +1,4 @@
-package project
+package rpc
 
 import (
 	"google.golang.org/grpc"
@@ -8,12 +8,11 @@ import (
 	"test.com/project-api/config"
 	"test.com/project-common/discovery"
 	"test.com/project-common/logs"
-	"test.com/project-grpc/project"
+	project "test.com/project-grpc/project"
 )
 
 var ProjectServiceClient project.ProjectServiceClient //引用这个客户端可以远程调用微服务
 
-// 调用grpc服务
 func InitRpcProjectClient() {
 	etcdRegister := discovery.NewResolver(config.C.EtcdConfig.Addrs, logs.LG)
 	resolver.Register(etcdRegister)

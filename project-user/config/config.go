@@ -56,6 +56,7 @@ func InitConfig() *Config {
 	config.viper.SetConfigName("config")
 	config.viper.SetConfigType("yaml")
 	config.viper.AddConfigPath("/etc/ms_project/user")
+	//AddConfigPath 可以添加多个路径，Viper 会按照添加的顺序依次查找配置文件。这里添加一下etc是为了在linux环境下加载配置文件
 	workDir, _ := os.Getwd()
 	config.viper.AddConfigPath(workDir + "/config")
 

@@ -13,7 +13,7 @@ import (
 	"test.com/project-common/encrypts"
 	"test.com/project-common/errs"
 	"test.com/project-common/jwts"
-	"test.com/project-grpc/user/login"
+	user_grpc "test.com/project-grpc/user/login"
 	"test.com/project-user/config"
 	"test.com/project-user/internal/dao"
 	"test.com/project-user/internal/data/member"
@@ -25,27 +25,27 @@ import (
 	"time"
 )
 
+func New() *LoginService {
+	return &LoginService{
+		cache:            dao.Rc,
+		organizationRepo: dao.NewOrganizationDao(),
+		memberRepo:       dao.NewMemberDao(),
+		transaction:      dao.NewTransaction(),
+	}
+}
+
 type LoginService struct { //注册登录微服务【类】。
 	// 微服务Server 1.需要继承Unimplemented_xxx类(_grpc.pb.go文件中的),然后这个类还需要
 	//2.实现你proto文件中定义的那些函数。
 	//那么这个微服务类才是可以注册到你grpcServer中的Server
-	login.UnimplementedLoginServiceServer                       //实现grpc
-	memberRepo                            repo.MemberRepo       //member表
-	organizationRepo                      repo.OrganizationRepo //organization表
-	transaction                           tran.Transaction
-	cache                                 repo.Cache //自己新增参数,这是一个自定义的缓存
+	user_grpc.UnimplementedLoginServiceServer
+	memberRepo       repo.MemberRepo       //member表
+	organizationRepo repo.OrganizationRepo //organization表
+	transaction      tran.Transaction
+	cache            repo.Cache //自己新增参数,这是一个自定义的缓存
 }
 
-func NewLoginService() *LoginService {
-	return &LoginService{
-		cache:            dao.Rc,
-		memberRepo:       dao.NewMemberDao(),
-		organizationRepo: dao.NewOrganizationDao(),
-		transaction:      dao.NewTransaction(), //!!!!!!事务实现
-	}
-}
-
-func (lg *LoginService) GetCaptcha(c context.Context, msg *login.CaptchaRequest) (*login.CaptchaResponse, error) {
+func (lg *LoginService) GetCaptcha(c context.Context, msg *user_grpc.CaptchaRequest) (*user_grpc.CaptchaResponse, error) {
 	mobile := msg.Mobile
 	if !common.VerifyMobile(mobile) {
 		return nil /*model.IllegalMobile*/, errs.GrpcError(model.IllegalMobile)
@@ -62,8 +62,8 @@ func (lg *LoginService) GetCaptcha(c context.Context, msg *login.CaptchaRequest)
 			log.Printf("验证码存入redis出错,cause by: %v\n", err)
 		}
 	}()
-	time.Sleep(1 * time.Second)
-	return &login.CaptchaResponse{Code: code}, nil
+	time.Sleep(1 * time.Second) //这样来做并发控制，不行
+	return &user_grpc.CaptchaResponse{Code: code}, nil
 }
 
 func RandomCaptCha() string {
@@ -76,8 +76,7 @@ func RandomCaptCha() string {
 	return strconv.Itoa(randomNumber)
 }
 
-// 根本原因是传入的msg电话获取不到，为空！！！！【】【】【
-func (lg *LoginService) Register(ctx context.Context, msg *login.RegisterRequest) (*login.RegisterResponse, error) {
+func (lg *LoginService) Register(ctx context.Context, msg *user_grpc.RegisterRequest) (*user_grpc.RegisterResponse, error) {
 	//校验参数
 	//fmt.Println("获取的电话号码", msg.Mobile)
 	c := context.Background()
@@ -161,53 +160,101 @@ func (lg *LoginService) Register(ctx context.Context, msg *login.RegisterRequest
 		return nil
 	})
 
-	return &login.RegisterResponse{}, err
+	return &user_grpc.RegisterResponse{}, err
 }
 
-func (lg *LoginService) Login(ctx context.Context, msg *login.LoginMessage) (*login.LoginResponse, error) { //实现微服务login
+func (lg *LoginService) Login(ctx context.Context, msg *user_grpc.LoginMessage) (*user_grpc.LoginResponse, error) { //实现微服务login
 	c := context.Background()
-	//pwd := encrypts.Md5(msg.Password)
-	mem, err := lg.memberRepo.FindMember(c, msg.Account, msg.Password) //因为注册前端已经做了加密
+	//msg.Password = encrypts.Md5(msg.Password)
+	fmt.Println("Login/rpc传过来的密码为", msg.Password)
+	memFormDB, err := lg.memberRepo.FindMember(c, msg.Account, msg.Password) //因为注册前端已经做了加密
 	if err != nil {
-		zap.L().Error("查询登录用户失败，数据库错误", zap.Error(err))
+		fmt.Println(err)
+		zap.L().Error("查询登录用户时数据库出现异常", zap.Error(err)) //查询用户失败!!!!!
 		return nil, errs.GrpcError(model.DBError)
 	}
-	if mem == nil { //注意为什么要接收判断这2个错误
+	if memFormDB == nil { //注意为什么要接收判断这2个错误
 		return nil, errs.GrpcError(model.AccuntAndPwdError)
 	}
-	memMsg := &login.MemberMessage{}
-	err = copier.Copy(memMsg, mem)
-	memMsg.Code, _ = encrypts.EncryptInt64(mem.Id, model.AESkey)
+	memMsg := &user_grpc.MemberMessage{}
+	err = copier.Copy(memMsg, memFormDB)
+	memMsg.Code, _ = encrypts.EncryptInt64(memFormDB.Id, model.AESkey)
+	memMsg.LastLoginTime = common.FormatByMill(memFormDB.LastLoginTime)
+	memMsg.CreateTime = common.FormatByMill(memFormDB.CreateTime)
 
-	orgs, err := lg.organizationRepo.FindOrganizationByMemId(c, mem.Id)
+	orgs, err := lg.organizationRepo.FindOrganizationByMemId(c, memFormDB.Id)
 	if err != nil {
-		zap.L().Error("查询登录用户的组织失败，数据库错误", zap.Error(err))
+		zap.L().Error("查询登录用户的组织失败", zap.Error(err))
 		return nil, errs.GrpcError(model.DBError)
 	}
-	var orgMessage []*login.OrganizationMessage
+	var orgMessage []*user_grpc.OrganizationMessage
 	err = copier.Copy(&orgMessage, orgs)
-	for _, v := range orgMessage {
+
+	orgMap := organization.ToMap(orgs)
+	for _, v := range orgMessage { //手动填入code,ownerCode和时间
 		v.Code, _ = encrypts.EncryptInt64(v.Id, model.AESkey)
+		v.OwnerCode = memMsg.Code
+		v.CreateTime = common.FormatByMill(orgMap[v.Id].CreateTime) //获取原始时间
+
 	}
 
 	exp := time.Duration(config.C.JwtConfig.AccessExp) * 3600 * 24 * time.Second //与time.duration相乘需要匹配类型
 	rExp := time.Duration(config.C.JwtConfig.RefreshExp) * 3600 * 24 * time.Second
 	//fmt.Println(config.C.JwtConfig.AccessSecret)
 	//fmt.Println(config.C.JwtConfig.RefreshSecret)
+	//fmt.Println("memFormDB.id", string(memFormDB.Id))//int64转string错误
+	idStr := strconv.FormatInt(memFormDB.Id, 10)
 
-	token := jwts.CreateToken(string(mem.Id), exp, config.C.JwtConfig.AccessSecret, rExp, config.C.JwtConfig.RefreshSecret)
+	token := jwts.CreateToken(idStr, exp, config.C.JwtConfig.AccessSecret, rExp, config.C.JwtConfig.RefreshSecret) //负载中只存了id
 
-	tokenList := &login.TokenMessage{
+	tokenList := &user_grpc.TokenMessage{
 		AccessToken:    token.AccessToken,
 		RefreshToken:   token.RefreshToken,
 		AccessTokenExp: token.AccessExp,
 		TokenType:      "bearer",
 	}
-	//token:=jwts.CreateToken(string(mem.Id),)
-	resp := &login.LoginResponse{
+	//token:=jwts.CreateToken(string(memFormDB.Id),)
+	resp := &user_grpc.LoginResponse{
 		Member:           memMsg,
 		OrganizationList: orgMessage,
 		TokenList:        tokenList,
 	}
 	return resp, nil
+}
+
+func (lg *LoginService) TokenVerify(ctx context.Context, msg *user_grpc.LoginMessage) (*user_grpc.LoginResponse, error) {
+	tokenStr := msg.Token
+	//fmt.Println("grpc通信获取的token为:", tokenStr)
+
+	parseToken, err := jwts.ParseToken(tokenStr, config.C.JwtConfig.AccessSecret)
+	if err != nil {
+		zap.L().Error("Token验证失败:", zap.Error(err))
+		return nil, errs.GrpcError(model.NoLogin)
+	}
+	//数据库查询
+	//fmt.Println(parseToken)
+	id, _ := strconv.ParseInt(parseToken, 10, 64)
+	memberbyId, err := lg.memberRepo.FindMemberById(context.Background(), id)
+	if err != nil {
+		zap.L().Error("查询id用户失败，数据库错误", zap.Error(err))
+		return nil, errs.GrpcError(model.DBError)
+	}
+
+	memMsg := &user_grpc.MemberMessage{}
+	copier.Copy(memMsg, memberbyId)
+	memMsg.Code, _ = encrypts.EncryptInt64(memberbyId.Id, model.AESkey)
+	return &user_grpc.LoginResponse{Member: memMsg}, nil
+}
+
+func (lg *LoginService) MyOrganization(ctx context.Context, in *user_grpc.MyOrgReqGrpc) (*user_grpc.MyOrgRspGrpc, error) {
+	orgList, err := lg.organizationRepo.FindOrganizationByMemId(ctx, in.Id)
+	if err != nil {
+		zap.L().Error("查询组织列表失败", zap.Error(err))
+
+		return &user_grpc.MyOrgRspGrpc{OrganizationList: nil}, err
+	}
+
+	ogrs := []*user_grpc.OrganizationMessage{}
+	copier.Copy(&ogrs, orgList)
+	return &user_grpc.MyOrgRspGrpc{OrganizationList: ogrs}, nil
 }

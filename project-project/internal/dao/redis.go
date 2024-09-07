@@ -7,7 +7,8 @@ import (
 	"time"
 )
 
-var Rc *RedisCache //内部单例
+var Rc *RedisCache
+
 type RedisCache struct {
 	rdb *redis.Client
 }
@@ -21,7 +22,7 @@ func (rc *RedisCache) Get(ctx context.Context, key string) (string, error) {
 	return result, err
 }
 
-func init() { //连接redis，初始化(赋值)内部单例，外界直接引用这个单例
+func init() {
 	rdb := redis.NewClient(config.C.ReadRedisConfig())
 	Rc = &RedisCache{rdb: rdb}
 }

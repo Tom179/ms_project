@@ -6,10 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
 	"net/http"
+	"test.com/project-api/api/rpc"
 	"test.com/project-api/pkg/model/user"
 	common "test.com/project-common"
 	"test.com/project-common/errs"
-	"test.com/project-grpc/user/login"
+	login "test.com/project-grpc/user/login"
 	"time"
 )
 
@@ -27,7 +28,7 @@ func (*UserHandler) getCaptcha(c *gin.Context) { //路由映射到此方法
 	//👇开启grpc链接，前提是已经将loginServiceClient实例化）
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	rsp, err := LoginServiceClient.GetCaptcha(ctx, &login.CaptchaRequest{Mobile: mobile})
+	rsp, err := rpc.LoginServiceClient.GetCaptcha(ctx, &login.CaptchaRequest{Mobile: mobile}) //grpc返回的err，和go中自带的err类型不一样，要手动解析grpcErr中的信息
 	if err != nil {
 		code, msg := errs.ParseGrpcError(err) //从错误中解析grpc错误
 		c.JSON(http.StatusOK, result.Fail(code, msg))
@@ -63,7 +64,7 @@ func (*UserHandler) register(c *gin.Context) {
 
 	fmt.Println("准备grpc调用")
 	fmt.Println("前端传给后端的password为:", msg.Password)
-	_, err = LoginServiceClient.Register(ctx, msg) //这才是具体的grpc调用啊
+	_, err = rpc.LoginServiceClient.Register(ctx, msg) //这才是具体的grpc调用啊
 	fmt.Println("接收到的grpc调用的返回值err为: ", err)
 
 	//gRPC调用
@@ -86,6 +87,7 @@ func (*UserHandler) login(c *gin.Context) {
 		c.JSON(http.StatusOK, result.Fail(http.StatusBadRequest, "参数格式有误"))
 		return
 	}
+	fmt.Println("输入的用户名:", req.Account, " 密码:", req.Password)
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
@@ -97,16 +99,21 @@ func (*UserHandler) login(c *gin.Context) {
 	}
 
 	//grpc调用
-	loginResp, err := LoginServiceClient.Login(ctx, msg)
+	loginResp_grpc, err := rpc.LoginServiceClient.Login(ctx, msg)
 	if err != nil {
 		code, msg := errs.ParseGrpcError(err)
 		c.JSON(http.StatusOK, result.Fail(code, msg))
 		return
 	}
+	fmt.Println("【grpc调用的响应为】:")
+	fmt.Println(loginResp_grpc)
 
-	rsp := &LoginRsp{}
+	rsp := LoginRsp{}
 
-	err = copier.Copy(rsp, loginResp)
+	err = copier.Copy(&rsp, loginResp_grpc)
+
+	fmt.Println("【api返回的Web响应为】:")
+	fmt.Println(rsp)
 	if err != nil {
 		c.JSON(http.StatusOK, result.Fail(http.StatusBadRequest, "copy出错"))
 	}
@@ -114,7 +121,25 @@ func (*UserHandler) login(c *gin.Context) {
 	c.JSON(http.StatusOK, result.Success(rsp))
 }
 
-func (*UserHandler) index(c *gin.Context) {
+type MyOrgReq struct {
+	Id int `json:"id"`
+}
+
+func (*UserHandler) MyOrg(c *gin.Context) {
+	result := common.Result{}
+	req := MyOrgReq{}
+
+	c.ShouldBindJSON(&req)
+	lc := rpc.LoginServiceClient
+	myorgMsg := login.MyOrgReqGrpc{}
+	copier.Copy(&myorgMsg, req)
+
+	rsp, err := lc.MyOrganization(context.Background(), &myorgMsg)
+	if err != nil {
+		code, msg := errs.ParseGrpcError(err)
+		c.JSON(http.StatusOK, result.Fail(code, msg))
+	}
+	c.JSON(http.StatusOK, result.Success(rsp))
 
 }
 
@@ -129,11 +154,14 @@ type LoginRsp struct {
 	OrganizationList []OrganizationList `json:"organizationList"`
 }
 type Member struct {
-	//Id     int64  `json:"id"`
-	Code   string `json:"code"` //对id进行加密，可解密
-	Name   string `json:"name"`
-	Mobile string `json:"mobile"`
-	Status int    `json:"status"`
+	Id               int64  `json:"id"`
+	Code             string `json:"code"` //对id进行加密，可解密
+	Name             string `json:"name"`
+	Mobile           string `json:"mobile"`
+	Status           int    `json:"status"`
+	CreateTime       string `json:"create_time"`
+	LastLoginTime    string `json:"last_login_time"`
+	OrganizationCode string `json:"organization_code"`
 }
 
 type TokenList struct {
@@ -149,8 +177,8 @@ type OrganizationList struct {
 	Name        string `json:"name"`
 	Avatar      string `json:"avatar"`
 	Description string `json:"description"`
-	MemberId    int64  `json:"memberId"`
-	CreateTime  int64  `json:"createTime"`
+	OwnerCode   string `json:"owner_code"`
+	CreateTime  string `json:"create_time"`
 	Personal    int32  `json:"personal"`
 	Address     string `json:"address"`
 	Province    int32  `json:"province"`

@@ -1,4 +1,4 @@
-package config //viper库配置文件
+package config
 
 import (
 	"github.com/go-redis/redis/v8"
@@ -64,7 +64,7 @@ func InitConfig() *Config {
 		log.Fatalln(err)
 	}
 
-	config.ReadServerConfig() //读取server配置
+	config.ReadServerConfig()
 	config.InitZapLog()
 	config.ReadGrpcConfig()
 	config.ReadEtcdConfig()
@@ -74,7 +74,7 @@ func InitConfig() *Config {
 	return config
 }
 
-func (c *Config) ReadServerConfig() { //读取server配置
+func (c *Config) ReadServerConfig() {
 	sc := &ServerConfig{}
 	sc.Name = c.viper.GetString("server.name")
 	sc.Addr = c.viper.GetString("server.addr")
@@ -103,7 +103,7 @@ func (c *Config) ReadRedisConfig() *redis.Options {
 	}
 }
 
-func (c *Config) ReadGrpcConfig() { //读取server配置
+func (c *Config) ReadGrpcConfig() {
 	gc := &GrpcConfig{}
 	gc.Name = c.viper.GetString("grpc.name")
 	gc.Addr = c.viper.GetString("grpc.addr")

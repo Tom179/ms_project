@@ -51,3 +51,8 @@ func (m *MemberDao) FindMember(ctx context.Context, account string, password str
 	}
 	return mem, err
 }
+
+func (m *MemberDao) FindMemberById(ctx context.Context, id int64) (mem *member.Member, err error) { //注意返回值还有变量名的写法
+	err = m.conn.Session(ctx).Where("id=?", id).First(&mem).Error
+	return
+}

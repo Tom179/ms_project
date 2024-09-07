@@ -7,7 +7,7 @@ import (
 	"net"
 	"test.com/project-common/discovery"
 	"test.com/project-common/logs"
-	"test.com/project-grpc/user/login"
+	user_grpc "test.com/project-grpc/user/login"
 	"test.com/project-user/config"
 	loginServiceV1 "test.com/project-user/pkg/service/login.service.v1"
 )
@@ -40,7 +40,7 @@ type gRPCconfig struct { //这个类用来表示一个grpc微服务模块
 func RegistGrpc() *grpc.Server {
 	ggg := gRPCconfig{Addr: config.C.GC.Addr,
 		RegisterFunc: func(g *grpc.Server) {
-			login.RegisterLoginServiceServer(g, loginServiceV1.NewLoginService()) //将自定义的微服务结构体注册到grpcServer中
+			user_grpc.RegisterLoginServiceServer(g, loginServiceV1.New()) //将自定义的微服务结构体注册到grpcServer中
 		}} //定义方法,未调用
 
 	s := grpc.NewServer() //创建grpc服务端，也就是上面说的grpcServer

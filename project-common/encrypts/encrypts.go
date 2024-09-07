@@ -9,6 +9,8 @@ import (
 	"strconv"
 )
 
+var AESKEY = "aeskey"
+
 func Md5(str string) string {
 	hash := md5.New()
 	_, _ = io.WriteString(hash, str)

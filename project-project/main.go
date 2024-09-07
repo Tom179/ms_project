@@ -11,6 +11,7 @@ func main() {
 	r := gin.Default()
 	gc := router.RegistGrpc()   //
 	router.RegisterEtcdServer() //grpc服务注册到etcd
+
 	stop := func() {
 		gc.Stop()
 	} //停止函数

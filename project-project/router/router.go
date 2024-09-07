@@ -21,7 +21,7 @@ func RegistGrpc() *grpc.Server {
 	ggg := gRPCconfig{Addr: config.C.GC.Addr,
 		RegisterFunc: func(g *grpc.Server) {
 			project.RegisterProjectServiceServer(g, project_service_v1.New())
-		}} //定义方法,未调用
+		}}
 
 	s := grpc.NewServer() //创建grpc服务端，也就是上面说的grpcServer
 	ggg.RegisterFunc(s)
@@ -43,17 +43,16 @@ func RegistGrpc() *grpc.Server {
 func RegisterEtcdServer() {
 	etcdRegister := discovery.NewResolver(config.C.EtcdConfig.Addrs, logs.LG) //传入etcd地址
 	resolver.Register(etcdRegister)
-	//这个resolver拿来干嘛？
 
-	info := discovery.Server{ //project模块识别了user的配置..
+	info := discovery.Server{
 		Name:    config.C.GC.Name,
 		Addr:    config.C.GC.Addr,
 		Version: config.C.GC.Version,
 		Weight:  config.C.GC.Weight,
 	}
 
-	r := discovery.NewRegister(config.C.EtcdConfig.Addrs, logs.LG) //创建注册器
-	_, err := r.RegistService(info, 2)                             //注册服务
+	r := discovery.NewRegister(config.C.EtcdConfig.Addrs, logs.LG)
+	_, err := r.RegistService(info, 2)
 	if err != nil {
 		log.Fatalln(err)
 	}

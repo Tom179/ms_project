@@ -3,13 +3,13 @@ services:
   mysql:
     container_name: mysql8
     image: mysql:${MYSQL_VERSION}
-    restart: always
+#    restart: always
     ports:
       - 3309:3306
     environment:
       TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: msproject
+      MYSQL_DATABASE: msproject # 启动时创建一个名为 msproject 的数据库
     volumes:
       - ${MYSQL_DIR}/data:/var/lib/mysql
       - ${MYSQL_DIR}/conf:/etc/mysql/conf.d/
@@ -23,7 +23,7 @@ services:
   Redis:
     container_name: redis6
     image: redis:${REDIS_VERSION}
-    restart: always
+#    restart: always
     volumes:
       - ${REDIS_DIR}/data:/data
       - ${REDIS_DIR}/conf/redis.conf:/etc/redis/redis.conf # 引入redis的配置文件：这个配置文件存放在项目外的data文件夹中
