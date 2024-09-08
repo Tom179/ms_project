@@ -189,7 +189,6 @@ func (lg *LoginService) Login(ctx context.Context, msg *user_grpc.LoginMessage) 
 	}
 	var orgMessage []*user_grpc.OrganizationMessage
 	err = copier.Copy(&orgMessage, orgs)
-
 	orgMap := organization.ToMap(orgs)
 	for _, v := range orgMessage { //手动填入code,ownerCode和时间
 		v.Code, _ = encrypts.EncryptInt64(v.Id, model.AESkey)
@@ -197,12 +196,12 @@ func (lg *LoginService) Login(ctx context.Context, msg *user_grpc.LoginMessage) 
 		v.CreateTime = common.FormatByMill(orgMap[v.Id].CreateTime) //获取原始时间
 
 	}
+	if len(orgs) > 0 {
+		memMsg.OrganizationCode, _ = encrypts.EncryptInt64(orgs[0].Id, encrypts.AESKEY) //加密第一个组织的id?
+	}
 
 	exp := time.Duration(config.C.JwtConfig.AccessExp) * 3600 * 24 * time.Second //与time.duration相乘需要匹配类型
 	rExp := time.Duration(config.C.JwtConfig.RefreshExp) * 3600 * 24 * time.Second
-	//fmt.Println(config.C.JwtConfig.AccessSecret)
-	//fmt.Println(config.C.JwtConfig.RefreshSecret)
-	//fmt.Println("memFormDB.id", string(memFormDB.Id))//int64转string错误
 	idStr := strconv.FormatInt(memFormDB.Id, 10)
 
 	token := jwts.CreateToken(idStr, exp, config.C.JwtConfig.AccessSecret, rExp, config.C.JwtConfig.RefreshSecret) //负载中只存了id
@@ -234,15 +233,25 @@ func (lg *LoginService) TokenVerify(ctx context.Context, msg *user_grpc.LoginMes
 	//数据库查询
 	//fmt.Println(parseToken)
 	id, _ := strconv.ParseInt(parseToken, 10, 64)
-	memberbyId, err := lg.memberRepo.FindMemberById(context.Background(), id)
+	memberbyId, err := lg.memberRepo.FindMemberById(ctx, id)
 	if err != nil {
 		zap.L().Error("查询id用户失败，数据库错误", zap.Error(err))
 		return nil, errs.GrpcError(model.DBError)
 	}
-
 	memMsg := &user_grpc.MemberMessage{}
 	copier.Copy(memMsg, memberbyId)
 	memMsg.Code, _ = encrypts.EncryptInt64(memberbyId.Id, model.AESkey)
+
+	orgsDB, err := lg.organizationRepo.FindOrganizationByMemId(ctx, id) //【tokenVerify中间件中，用户，组织信息每次都在数据库中查询？先思考一个问题，用户信息不能直接放在jwt的载荷中吗？如果不能，只能通过载荷中的id到数据库中去查询，这样可能开销有一些大，因为每个接口都会走一次verify的中间件。加缓存？？】
+	if err != nil {
+		zap.L().Error("查询登录用户的组织失败", zap.Error(err))
+		return nil, errs.GrpcError(model.DBError)
+	}
+
+	if len(orgsDB) > 0 { //只需要加密组织字段
+		memMsg.OrganizationCode, _ = encrypts.EncryptInt64(orgsDB[0].Id, encrypts.AESKEY) //加密第一个组织的id?
+	}
+
 	return &user_grpc.LoginResponse{Member: memMsg}, nil
 }
 

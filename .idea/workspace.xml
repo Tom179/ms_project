@@ -5,30 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7880dfdd-d5a1-4e3a-8353-9bc8e718c334" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/project-api/pkg/model/page.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-common/code_gen/code_gen.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-common/tms.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-project/internal/dao/project.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-project/internal/data/project/pro.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/project-project/internal/repo/project.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-project/internal/data/task/task.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/debug/project-debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/debug/project-debug.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/debug/projectService-debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/debug/projectService-debug.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/error/project-error.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/error/project-error.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/error/projectService-error.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/error/projectService-error.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/info/project-info.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/info/project-info.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/info/projectService-info.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/info/projectService-info.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-api/api/MiddleWare/midd.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/MiddleWare/midd.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-api/api/project/project.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/project/project.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-api/api/project/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/project/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/api/project/rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/rpc/Project_rpc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/api/user/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/user/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/api/user/rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/rpc/user_rpc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/api/user/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/user/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-common/discovery/discovery.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/discovery/discovery.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-common/discovery/resover.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/discovery/resover.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-api/pkg/model/page.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/pkg/model/page.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-common/encrypts/encrypts.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/encrypts/encrypts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-common/jwts/jwts.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/jwts/jwts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-common/jwts/jwts_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/jwts/jwts_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-grpc/project/project_service.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-grpc/project/project_service.pb.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-grpc/project/project_service_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-grpc/project/project_service_grpc.pb.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-grpc/user/login/login_service.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-grpc/user/login/login_service.pb.go" afterDir="false" />
@@ -36,27 +25,14 @@
       <change beforePath="$PROJECT_DIR$/project-project/api/proto/gen/project_service.pb.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/project-project/api/proto/gen/project_service_grpc.pb.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/project-project/api/proto/project_service.proto" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/api/proto/project_service.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/internal/dao/menu.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/dao/menu.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/internal/dao/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/dao/redis.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/internal/data/menu/menu.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/data/menu/menu.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/internal/database/gorm/gorm.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/database/gorm/gorm.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/internal/database/tran/tran.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/database/tran/tran.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/internal/repo/cache.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/repo/cache.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/pkg/model/code.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/pkg/model/code.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-project/internal/dao/project.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/dao/project.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-project/internal/data/project/pro.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/data/project/pro.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-project/internal/repo/project.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/repo/project.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-project/pkg/service/project.service.v1/project_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/pkg/service/project.service.v1/project_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/router/router.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-user/api/proto/gen/login_service.pb.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/project-user/api/proto/gen/login_service_grpc.pb.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/project-user/api/proto/login_service.proto" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/api/proto/login_service.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/internal/dao/member.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/internal/dao/member.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/internal/data/organization/organization.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/internal/data/organization/organization.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/internal/repo/member.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/internal/repo/member.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/pkg/model/code.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/pkg/model/code.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/router/router.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,8 +90,8 @@
       <recent name="D:\GoWorks\project\ms_project\project-user\internal\repo" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\GoWorks\project\ms_project\project-grpc\project" />
       <recent name="D:\GoWorks\project\ms_project\project-grpc\user\login" />
+      <recent name="D:\GoWorks\project\ms_project\project-grpc\project" />
       <recent name="D:\GoWorks\project\ms_project\project-api\api\rpc" />
       <recent name="D:\GoWorks\project\ms_project\project-user\api\proto" />
       <recent name="D:\GoWorks\project\ms_project\project-user\internal" />
@@ -193,12 +169,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/project-api/api/project/project.go</url>
-          <line>75</line>
+          <line>90</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/project-api/api/project/project.go</url>
-          <line>37</line>
+          <line>36</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>

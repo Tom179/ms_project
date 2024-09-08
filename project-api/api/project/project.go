@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"strconv"
 	"test.com/project-api/api/rpc"
-	"test.com/project-api/pkg/model"
 	common "test.com/project-common"
 	"test.com/project-common/errs"
 	project "test.com/project-grpc/project"
@@ -66,14 +65,38 @@ type Menu struct {
 	Children   []*Menu `json:"children"`
 }
 
+type Page struct {
+	Page     int64  `json:"page" form:"page"`
+	PageSize int64  `json:"pageSize" form:"pageSize"`
+	SelectBy string `json:"SelectBy" form:"SelectBy"`
+}
+
+func InitPageForm(c *gin.Context) (int64, int64) {
+	page, _ := strconv.ParseInt(c.PostForm("page"), 10, 64)
+	pageSize, _ := strconv.ParseInt(c.PostForm("pageSize"), 10, 64)
+	if page == 0 {
+		page = 1
+	}
+	if pageSize == 0 {
+		pageSize = 10
+	}
+	return page, pageSize
+}
+
 func (p *ProjectHandler) MyProject(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
+	page, pageSize := InitPageForm(c)
 
-	page := &model.Page{}
-	page.Bind(c)
+	msg := &project.ProjectRpcMessage{
+		MemberId:   c.GetInt64("memberId"),
+		MemberName: c.GetString("memberName"),
+		Page:       page,
+		PageSize:   pageSize,
+		SelectBy:   c.PostForm("selectBy"),
+	}
 
-	msg := &project.ProjectRpcMessage{MemberId: c.GetInt64("memberId"), MemberName: c.GetString("memberName"), Page: page.Page, PageSize: page.PageSize}
+	fmt.Println("查询类型selectedBy为", msg.SelectBy)
 	rsp, err := rpc.ProjectServiceClient.FindProjectByMemId(ctx, msg)
 
 	result := common.Result{}
@@ -82,19 +105,50 @@ func (p *ProjectHandler) MyProject(c *gin.Context) {
 		c.JSON(http.StatusOK, result.Fail(code, msg))
 	}
 
-	if rsp.Pm == nil {
-		rsp.Pm = []*project.ProjectMessage{}
+	pms := []*ProAndMember{}
+	copier.Copy(&pms, rsp.Pm)
+	/*
+		fmt.Println("grpc返回的响应为", rsp.Pm)
+		fmt.Println("api返回的响应为", myProjectList)*/
+	if pms == nil {
+		pms = []*ProAndMember{}
 	}
 
-	myProjectList := []*ProAndMember{}
-	copier.Copy(&myProjectList, rsp.Pm)
+	c.JSON(http.StatusOK, result.Success(gin.H{
+		"list":  pms,
+		"total": rsp.Total,
+	}))
+}
 
-	fmt.Println("grpc返回的响应为", rsp.Pm)
-	fmt.Println("api返回的响应为", myProjectList)
+func (p *ProjectHandler) ProjectTemplate(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	page, pageSize := InitPageForm(c)
+	viewType, _ := strconv.ParseInt(c.PostForm("viewType"), 10, 32)
+
+	msg := &project.ProjectRpcMessage{
+		MemberId:   c.GetInt64("memberId"),
+		MemberName: c.GetString("memberName"),
+		Page:       page,
+		PageSize:   pageSize,
+		SelectBy:   c.PostForm("selectBy"),
+		ViewType:   int32(viewType),
+	}
+	rpcRsp, err := rpc.ProjectServiceClient.FindProjectTemplate(ctx, msg)
+
+	result := common.Result{}
+	if err != nil {
+		code, msg := errs.ParseGrpcError(err)
+		c.JSON(http.StatusOK, result.Fail(code, msg))
+	}
+
+	/*
+		fmt.Println("grpc返回的响应为", rpcRsp.Pm)
+		fmt.Println("api返回的响应为", myProjectList)*/
 
 	c.JSON(http.StatusOK, result.Success(gin.H{
-		"list":  myProjectList,
-		"total": rsp.Total,
+		"list":  rpcRsp.Ptm,
+		"total": rpcRsp.Total,
 	}))
 }
 
@@ -143,4 +197,21 @@ type ProAndMember struct {
 	Authorize   string `json:"authorize"`
 	OwnerName   string `json:"owner_name"`
 	Collected   int    `json:"collected"`
+}
+type ProjectTemplate struct {
+	Id               int                   `json:"id"`
+	Name             string                `json:"name"`
+	Description      string                `json:"description"`
+	Sort             int                   `json:"sort"`
+	CreateTime       string                `json:"create_time"`
+	OrganizationCode string                `json:"organization_code"`
+	Cover            string                `json:"cover"`
+	MemberCode       string                `json:"member_code"`
+	IsSystem         int                   `json:"is_system"`
+	TaskStages       []*TaskStagesOnlyName `json:"task_stages"`
+	Code             string                `json:"code"`
+}
+
+type TaskStagesOnlyName struct {
+	Name string `json:"name"`
 }

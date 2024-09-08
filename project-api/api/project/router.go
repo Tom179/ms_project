@@ -21,13 +21,12 @@ func (*RouterProject) SetRoute(r *gin.Engine) {
 	rpc.InitRpcProjectClient()
 	h := NewProjectHandler()
 
-	projectGroup := r.Group("/project/index")
+	projectGroup := r.Group("/project")
 	projectGroup.Use(MiddleWare.TokenVerify)
-	projectGroup.POST("", h.index)
+	projectGroup.POST("/index", h.index)
 
-	projectGroup1 := r.Group("/project/project")
-	projectGroup1.Use(MiddleWare.TokenVerify)
-	projectGroup1.POST("/selfList", h.MyProject)
-	projectGroup1.POST("/", h.MyProject)
+	projectGroup.POST("/project/selfList", h.MyProject)
+	projectGroup.POST("/project", h.MyProject)
+	projectGroup.POST("/project_template", h.ProjectTemplate)
 
 }

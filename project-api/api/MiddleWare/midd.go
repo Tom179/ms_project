@@ -17,19 +17,6 @@ import (
 // 2.调用User服务进行token认证
 // 3. 处理结果，将信息放入gin的上下文
 func TokenVerify(c *gin.Context) {
-	/*token := c.GetHeader("Authorization")
-	if token == "" {
-		fmt.Println("没有Authorization头")
-		c.AbortWithStatusJSON(200, gin.H{
-			"msg": "没有Authorization头",
-		})
-	}
-
-	claims := jwts.ParseToken(tokenStr, config.C.JwtConfig.AccessSecret)
-	fmt.Println("claims解析完成,id为:", claims["id"])
-	c.Set("claims", claims)
-
-	c.Next()*/
 	result := &common.Result{}
 
 	token := c.GetHeader("Authorization")
@@ -54,5 +41,6 @@ func TokenVerify(c *gin.Context) {
 	}
 	c.Set("memberId", resp.Member.Id)
 	c.Set("memberName", resp.Member.Name)
+	c.Set("organizationCode", resp.Member.OrganizationCode)
 	c.Next()
 }
