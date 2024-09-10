@@ -102,20 +102,25 @@ func (p *ProjectService) FindProjectTemplate(ctx context.Context, msg *project_g
 	var err error
 
 	if msg.ViewType == 0 { //自定义模板
-		condition = fmt.Sprintf("and member_code=%d", int(msg.MemberId)) //和底层DB耦合，业务层还需要弄清表结构，不太好
+		condition = fmt.Sprintf("where member_code=%d", int(msg.MemberId)) //和底层DB耦合，业务层还需要弄清表结构，不太好
 	} else if msg.ViewType == 1 { //系统模板
-		condition = fmt.Sprintf("and is_system=1")
+		condition = fmt.Sprintf("where is_system=1")
 	} else if msg.ViewType == -1 { //所有模板
 		condition = fmt.Sprintf("")
 	}
 
 	dbResult, total, err = p.projectRepo.FindProjectTemplateByCondition(ctx, msg.Page, msg.PageSize, condition)
 
-	copier.Copy(&rsp, dbResult)
+	err = copier.Copy(&rsp.Ptm, dbResult)
+	if err != nil {
+		fmt.Println("拷贝失败：", err)
+	}
 	for _, t := range rsp.Ptm {
 		t.Code, err = encrypts.Encrypt(string(t.Id), encrypts.AESKEY)
 	}
 	rsp.Total = total
+	fmt.Println("rpcServce最终构建的rsp为", rsp.Ptm)
+	fmt.Println("dbREsult", dbResult)
 
-	return &rsp, err
+	return &rsp, err //rpc服务方
 }

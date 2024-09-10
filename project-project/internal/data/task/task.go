@@ -13,7 +13,7 @@ func (*MsTaskStagesTemplate) TableName() string {
 }
 
 type TaskStagesOnlyName struct {
-	Name string
+	Name string `gorm:"column:task_name"`
 }
 
 func CovertProjectMap(tsts []MsTaskStagesTemplate) map[int][]*TaskStagesOnlyName {

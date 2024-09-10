@@ -10338,3 +10338,41 @@
 {"level":"ERROR","time":"2024-09-09T04:34:42.656+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"context deadline exceeded"}
 {"level":"ERROR","time":"2024-09-09T04:34:43.044+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"context deadline exceeded"}
 {"level":"ERROR","time":"2024-09-09T04:34:56.268+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-09-09T06:34:43.035+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-09-09T06:34:47.587+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-09-09T06:34:47.351+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-09-09T06:34:58.124+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"etcdserver: request timed out"}
+{"level":"ERROR","time":"2024-09-09T06:35:01.843+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-09-09T07:20:50.932+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-09-09T07:20:51.106+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T07:20:51.119+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:15:12.207+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:21:28.814+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:28:28.809+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:31:28.805+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:38:09.739+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:39:09.752+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:41:09.784+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:47:09.870+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:50:09.899+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:51:09.917+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:52:09.930+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-09T08:53:09.946+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-10T06:39:29.522+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-10T06:40:29.514+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-10T06:41:29.548+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-10T06:45:29.502+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-10T23:58:12.727+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-10T23:59:12.726+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T00:00:12.720+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T00:01:12.726+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T00:02:12.735+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T01:05:12.885+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T01:06:12.868+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T01:07:12.875+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T01:08:12.889+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T01:09:12.885+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T01:10:12.887+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T01:14:06.435+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T01:15:06.459+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}
+{"level":"ERROR","time":"2024-09-11T01:30:00.969+0800","caller":"discovery/resover.go:120","msg":"sync failed","error":"没有找到服务"}

@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7880dfdd-d5a1-4e3a-8353-9bc8e718c334" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/project-project/internal/data/task/task.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/debug/project-debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/debug/project-debug.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/debug/projectService-debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/debug/projectService-debug.log" afterDir="false" />
@@ -13,26 +12,12 @@
       <change beforePath="$PROJECT_DIR$/logs/error/projectService-error.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/error/projectService-error.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/info/project-info.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/info/project-info.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/info/projectService-info.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/info/projectService-info.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/api/MiddleWare/midd.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/MiddleWare/midd.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-api/api/project/project.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/project/project.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/api/project/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/api/project/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-api/pkg/model/page.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-api/pkg/model/page.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-common/encrypts/encrypts.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-common/encrypts/encrypts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-grpc/project/project_service.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-grpc/project/project_service.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-grpc/project/project_service_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-grpc/project/project_service_grpc.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-grpc/user/login/login_service.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-grpc/user/login/login_service.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-grpc/user/login/login_service_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-grpc/user/login/login_service_grpc.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/api/proto/gen/project_service.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/api/proto/gen/project_service_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/api/proto/project_service.proto" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/api/proto/project_service.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-project/internal/dao/project.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/dao/project.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-project/internal/data/project/pro.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/data/project/pro.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-project/internal/repo/project.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/repo/project.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-project/internal/data/task/task.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/internal/data/task/task.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-project/pkg/service/project.service.v1/project_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-project/pkg/service/project.service.v1/project_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/api/proto/gen/login_service.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/api/proto/gen/login_service_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/api/proto/login_service.proto" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/api/proto/login_service.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/project-user/pkg/service/login.service.v1/login_service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,8 +123,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build test.com/project-api" />
         <item itemvalue="Go Build.go build test.com/project-project" />
+        <item itemvalue="Go Build.go build test.com/project-api" />
         <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build test.com/project-user" />
         <item itemvalue="HTTP Request.generated-requests | #1" />
@@ -176,6 +161,16 @@
           <url>file://$PROJECT_DIR$/project-api/api/project/project.go</url>
           <line>36</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/project-api/api/project/project.go</url>
+          <line>136</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/project-project/pkg/service/project.service.v1/project_service.go</url>
+          <line>124</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

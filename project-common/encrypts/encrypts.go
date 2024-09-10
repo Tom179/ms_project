@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-var AESKEY = "aeskey"
+var AESKEY = "abcdefgehjhijkmlkjjwwoew"
 
 func Md5(str string) string {
 	hash := md5.New()

@@ -110,7 +110,7 @@ func (*ProjectTemplate) TableName() string {
 	return "ms_project_template"
 }
 
-func (pt ProjectTemplate) Convert(taskStages []*task.TaskStagesOnlyName) *ProjectTemplateAll {
+func (pt *ProjectTemplate) Convert(taskStages []*task.TaskStagesOnlyName) *ProjectTemplateAll {
 	organizationCode, _ := encrypts.EncryptInt64(pt.OrganizationCode, encrypts.AESKEY)
 	memberCode, _ := encrypts.EncryptInt64(pt.MemberCode, encrypts.AESKEY)
 	code, _ := encrypts.EncryptInt64(int64(pt.Id), encrypts.AESKEY)

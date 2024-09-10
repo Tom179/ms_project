@@ -135,19 +135,22 @@ func (p *ProjectHandler) ProjectTemplate(c *gin.Context) {
 		ViewType:   int32(viewType),
 	}
 	rpcRsp, err := rpc.ProjectServiceClient.FindProjectTemplate(ctx, msg)
+	fmt.Println("响应为", rpcRsp)
 
 	result := common.Result{}
 	if err != nil {
 		code, msg := errs.ParseGrpcError(err)
 		c.JSON(http.StatusOK, result.Fail(code, msg))
 	}
+	myPeojrctList := []*ProjectTemplate{}
+	//rpcRsp.Ptm
+	copier.Copy(&myPeojrctList, rpcRsp.Ptm)
 
-	/*
-		fmt.Println("grpc返回的响应为", rpcRsp.Pm)
-		fmt.Println("api返回的响应为", myProjectList)*/
+	fmt.Println("grpc返回的响应为", rpcRsp.Ptm) //空指针了
+	//fmt.Println("api返回的响应为", myProjectList)
 
 	c.JSON(http.StatusOK, result.Success(gin.H{
-		"list":  rpcRsp.Ptm,
+		"list":  myPeojrctList,
 		"total": rpcRsp.Total,
 	}))
 }
