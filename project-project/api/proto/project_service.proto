@@ -29,7 +29,7 @@ message IndexResponse{
   repeated MenuMessage menus = 1;
 }
 
-message ProjectMessage {
+message ProjectMessage {//项目/单个项目信息共用一个message，所以会有collected字段
   int64 Id = 1;
   string Cover = 2;
   string Name = 3;
@@ -41,7 +41,7 @@ message ProjectMessage {
   string TemplateCode = 9;
   double Schedule = 10;
   string CreateTime = 11;
-  string OrganizationCode = 12;
+  int64 OrganizationCode = 12;
   string DeletedTime = 13;
   int32 Private = 14;
   string Prefix = 15;
@@ -62,6 +62,7 @@ message ProjectMessage {
   string code = 30;
   string ownerName = 31;//?
   int32 collected = 32;//?
+  string owner_avatar=33;
 }
 
 message ProjectRpcMessage{
@@ -101,8 +102,11 @@ message ProjectTemplateResponse{
   int64  Total = 2;
 }
 
+
 service ProjectService {
   rpc Index(IndexMessage) returns (IndexResponse) {}
   rpc FindProjectByMemId(ProjectRpcMessage) returns (MyProjectResponse){}
   rpc FindProjectTemplate(ProjectRpcMessage) returns (ProjectTemplateResponse){}
+  rpc CreateProject(ProjectMessage)returns (ProjectMessage){}//为什么想到共用/复用一个message，因为本次请求参数，projectRpcMessage本来就有，没必要
+  rpc ReadProject(ProjectMessage)returns (ProjectMessage){}
 }

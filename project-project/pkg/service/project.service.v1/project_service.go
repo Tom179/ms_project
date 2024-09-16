@@ -5,14 +5,19 @@ import (
 	"fmt"
 	"github.com/jinzhu/copier"
 	"go.uber.org/zap"
+	"strconv"
 	common "test.com/project-common"
 	"test.com/project-common/encrypts"
+	"test.com/project-common/errs"
 	project_grpc "test.com/project-grpc/project"
 	"test.com/project-project/internal/dao"
 	"test.com/project-project/internal/data/menu"
 	"test.com/project-project/internal/data/project"
+	"test.com/project-project/internal/database"
 	"test.com/project-project/internal/database/tran"
 	"test.com/project-project/internal/repo"
+	"test.com/project-project/pkg/model"
+	"time"
 )
 
 type ProjectService struct {
@@ -21,6 +26,49 @@ type ProjectService struct {
 	menuRepo    repo.MenuRepo
 	projectRepo repo.ProjectRepo
 	transaction tran.Transaction
+}
+
+func (p *ProjectService) ReadProject(ctx context.Context, msg *project_grpc.ProjectMessage) (*project_grpc.ProjectMessage, error) {
+	projectId := msg.ProjectCode
+	rpcRsp := project_grpc.ProjectMessage{}
+	singleProject, err := p.projectRepo.ReadOneProject(ctx, projectId)
+	if err != nil {
+		return nil, errs.GrpcError(err.(*errs.BError))
+	}
+	copier.Copy(&rpcRsp, singleProject)
+	return &rpcRsp, nil
+}
+
+func (p *ProjectService) CreateProject(ctx context.Context, msg *project_grpc.ProjectMessage) (*project_grpc.ProjectMessage, error) {
+	fmt.Println("创建项目的用户id为:", msg.Id)
+	project := project.Project{
+		Name:              msg.Name,
+		TemplateCode:      msg.TemplateCode,
+		Description:       msg.Description,
+		OrganizationCode:  msg.OrganizationCode,
+		Cover:             "https://images.pexels.com/photos/372787/pexels-photo-372787.jpeg",
+		CreateTime:        time.Now().UnixMilli(),
+		AccessControlType: model.Open,
+		Archive:           model.NoArcheve,
+		TaskBoardTheme:    model.Simple,
+	}
+
+	err := p.transaction.Action(func(conn database.DbConn) error {
+		err := p.projectRepo.CreateProject(ctx, &project, msg.Id)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+
+	if err != nil {
+		return nil, errs.GrpcError(err.(*errs.BError)) //????会报错类型转换错误
+	} //panic: interface conversion: error is *mysql.MySQLError, not *errs.BError
+
+	rpcRsp := project_grpc.ProjectMessage{}
+	copier.Copy(&rpcRsp, project)
+	rpcRsp.CreateTime = strconv.FormatInt(project.CreateTime, 10)
+	return &rpcRsp, nil
 }
 
 func New() *ProjectService {
@@ -80,11 +128,14 @@ func (p *ProjectService) FindProjectByMemId(ctx context.Context, msg *project_gr
 	var rsp []*project_grpc.ProjectMessage
 	copier.Copy(&rsp, pms)
 	for _, v := range rsp {
+
 		v.Code, _ = encrypts.EncryptInt64(v.Id, encrypts.AESKEY)
 		pam := project.ToMap(pms)[v.Id] //根据id得到ProjectAndMember
+		organizationCode, _ := encrypts.EncryptInt64(pam.OrganizationCode, encrypts.AESKEY)
+		organizationCodeInt64, _ := strconv.ParseInt(organizationCode, 10, 64)
 
 		v.AccessControlType = pam.GetAccessControlType()
-		v.OrganizationCode, _ = encrypts.EncryptInt64(pam.OrganizationCode, encrypts.AESKEY)
+		v.OrganizationCode = organizationCodeInt64
 		v.JoinTime = common.FormatByMill(pam.JoinTime)
 		v.OwnerName = msg.MemberName
 		v.Order = int32(pam.Sort)

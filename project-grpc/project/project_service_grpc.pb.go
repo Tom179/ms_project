@@ -4,7 +4,7 @@
 // - protoc             v4.22.3
 // source: project_service.proto
 
-package project_service_v1
+package project
 
 import (
 	context "context"
@@ -25,6 +25,8 @@ type ProjectServiceClient interface {
 	Index(ctx context.Context, in *IndexMessage, opts ...grpc.CallOption) (*IndexResponse, error)
 	FindProjectByMemId(ctx context.Context, in *ProjectRpcMessage, opts ...grpc.CallOption) (*MyProjectResponse, error)
 	FindProjectTemplate(ctx context.Context, in *ProjectRpcMessage, opts ...grpc.CallOption) (*ProjectTemplateResponse, error)
+	CreateProject(ctx context.Context, in *ProjectMessage, opts ...grpc.CallOption) (*ProjectMessage, error)
+	ReadProject(ctx context.Context, in *ProjectMessage, opts ...grpc.CallOption) (*ProjectMessage, error)
 }
 
 type projectServiceClient struct {
@@ -62,6 +64,24 @@ func (c *projectServiceClient) FindProjectTemplate(ctx context.Context, in *Proj
 	return out, nil
 }
 
+func (c *projectServiceClient) CreateProject(ctx context.Context, in *ProjectMessage, opts ...grpc.CallOption) (*ProjectMessage, error) {
+	out := new(ProjectMessage)
+	err := c.cc.Invoke(ctx, "/project.service.v1.ProjectService/CreateProject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectServiceClient) ReadProject(ctx context.Context, in *ProjectMessage, opts ...grpc.CallOption) (*ProjectMessage, error) {
+	out := new(ProjectMessage)
+	err := c.cc.Invoke(ctx, "/project.service.v1.ProjectService/ReadProject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectServiceServer is the server API for ProjectService service.
 // All implementations must embed UnimplementedProjectServiceServer
 // for forward compatibility
@@ -69,6 +89,8 @@ type ProjectServiceServer interface {
 	Index(context.Context, *IndexMessage) (*IndexResponse, error)
 	FindProjectByMemId(context.Context, *ProjectRpcMessage) (*MyProjectResponse, error)
 	FindProjectTemplate(context.Context, *ProjectRpcMessage) (*ProjectTemplateResponse, error)
+	CreateProject(context.Context, *ProjectMessage) (*ProjectMessage, error)
+	ReadProject(context.Context, *ProjectMessage) (*ProjectMessage, error)
 	mustEmbedUnimplementedProjectServiceServer()
 }
 
@@ -84,6 +106,12 @@ func (UnimplementedProjectServiceServer) FindProjectByMemId(context.Context, *Pr
 }
 func (UnimplementedProjectServiceServer) FindProjectTemplate(context.Context, *ProjectRpcMessage) (*ProjectTemplateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindProjectTemplate not implemented")
+}
+func (UnimplementedProjectServiceServer) CreateProject(context.Context, *ProjectMessage) (*ProjectMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProject not implemented")
+}
+func (UnimplementedProjectServiceServer) ReadProject(context.Context, *ProjectMessage) (*ProjectMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReadProject not implemented")
 }
 func (UnimplementedProjectServiceServer) mustEmbedUnimplementedProjectServiceServer() {}
 
@@ -152,6 +180,42 @@ func _ProjectService_FindProjectTemplate_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProjectService_CreateProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProjectMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectServiceServer).CreateProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/project.service.v1.ProjectService/CreateProject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectServiceServer).CreateProject(ctx, req.(*ProjectMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectService_ReadProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProjectMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectServiceServer).ReadProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/project.service.v1.ProjectService/ReadProject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectServiceServer).ReadProject(ctx, req.(*ProjectMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProjectService_ServiceDesc is the grpc.ServiceDesc for ProjectService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -170,6 +234,14 @@ var ProjectService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FindProjectTemplate",
 			Handler:    _ProjectService_FindProjectTemplate_Handler,
+		},
+		{
+			MethodName: "CreateProject",
+			Handler:    _ProjectService_CreateProject_Handler,
+		},
+		{
+			MethodName: "ReadProject",
+			Handler:    _ProjectService_ReadProject_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -28,5 +28,7 @@ func (*RouterProject) SetRoute(r *gin.Engine) {
 	projectGroup.POST("/project/selfList", h.MyProject)
 	projectGroup.POST("/project", h.MyProject)
 	projectGroup.POST("/project_template", h.ProjectTemplate)
+	projectGroup.POST("/project/save", h.SaveProject)
+	projectGroup.POST("/project/read", h.ReadProject)
 
 }

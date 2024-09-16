@@ -9,28 +9,29 @@ import (
 	"strconv"
 	"test.com/project-api/api/rpc"
 	common "test.com/project-common"
+	"test.com/project-common/encrypts"
 	"test.com/project-common/errs"
-	project "test.com/project-grpc/project"
+	project_grpc "test.com/project-grpc/project"
 	"time"
 )
 
 type ProjectHandler struct {
+	result *common.Result
 }
 
 func NewProjectHandler() *ProjectHandler {
-	return &ProjectHandler{}
+	return &ProjectHandler{result: &common.Result{}}
 }
 
 func (p *ProjectHandler) index(c *gin.Context) {
 	idStr, _ := c.Get("memberId")
 	//fmt.Println(reflect.TypeOf(idStr))
 	id := strconv.FormatInt(idStr.(int64), 10)
-	result := &common.Result{}
 
-	rsp, err := rpc.ProjectServiceClient.Index(context.Background(), &project.IndexMessage{Token: id})
+	rsp, err := rpc.ProjectServiceClient.Index(context.Background(), &project_grpc.IndexMessage{Token: id})
 	if err != nil {
 		code, msg := errs.ParseGrpcError(err)
-		c.JSON(http.StatusOK, result.Fail(code, msg))
+		c.JSON(http.StatusOK, p.result.Fail(code, msg))
 	}
 	req := []*Menu{}
 
@@ -41,7 +42,7 @@ func (p *ProjectHandler) index(c *gin.Context) {
 	}
 	fmt.Println("拷贝成功")
 
-	c.JSON(http.StatusOK, result.Success(req))
+	c.JSON(http.StatusOK, p.result.Success(req))
 }
 
 type Menu struct {
@@ -88,7 +89,7 @@ func (p *ProjectHandler) MyProject(c *gin.Context) {
 	defer cancel()
 	page, pageSize := InitPageForm(c)
 
-	msg := &project.ProjectRpcMessage{
+	msg := &project_grpc.ProjectRpcMessage{
 		MemberId:   c.GetInt64("memberId"),
 		MemberName: c.GetString("memberName"),
 		Page:       page,
@@ -99,10 +100,9 @@ func (p *ProjectHandler) MyProject(c *gin.Context) {
 	fmt.Println("查询类型selectedBy为", msg.SelectBy)
 	rsp, err := rpc.ProjectServiceClient.FindProjectByMemId(ctx, msg)
 
-	result := common.Result{}
 	if err != nil {
 		code, msg := errs.ParseGrpcError(err)
-		c.JSON(http.StatusOK, result.Fail(code, msg))
+		c.JSON(http.StatusOK, p.result.Fail(code, msg))
 	}
 
 	pms := []*ProAndMember{}
@@ -114,7 +114,7 @@ func (p *ProjectHandler) MyProject(c *gin.Context) {
 		pms = []*ProAndMember{}
 	}
 
-	c.JSON(http.StatusOK, result.Success(gin.H{
+	c.JSON(http.StatusOK, p.result.Success(gin.H{
 		"list":  pms,
 		"total": rsp.Total,
 	}))
@@ -126,7 +126,7 @@ func (p *ProjectHandler) ProjectTemplate(c *gin.Context) {
 	page, pageSize := InitPageForm(c)
 	viewType, _ := strconv.ParseInt(c.PostForm("viewType"), 10, 32)
 
-	msg := &project.ProjectRpcMessage{
+	msg := &project_grpc.ProjectRpcMessage{
 		MemberId:   c.GetInt64("memberId"),
 		MemberName: c.GetString("memberName"),
 		Page:       page,
@@ -153,6 +153,62 @@ func (p *ProjectHandler) ProjectTemplate(c *gin.Context) {
 		"list":  myPeojrctList,
 		"total": rpcRsp.Total,
 	}))
+}
+
+func (p *ProjectHandler) SaveProject(c *gin.Context) {
+	templateCode := c.PostForm("templateCode")
+	name := c.PostForm("name")
+	description := c.PostForm("description")
+	id := c.GetInt64("memberId")
+	fmt.Println("从上下文中获取的用户id为:", id)
+
+	organizationCode, err := encrypts.Decrypt(c.GetString("organizationCode"), encrypts.AESKEY)
+	organizationCodeInt64, err := strconv.ParseInt(organizationCode, 10, 64)
+	if err != nil {
+		fmt.Println("解密organizationCode失败:", err)
+	}
+
+	msg := &project_grpc.ProjectMessage{Name: name, Description: description, TemplateCode: templateCode, Id: id, OrganizationCode: organizationCodeInt64}
+	rpcRsp, err := rpc.ProjectServiceClient.CreateProject(context.Background(), msg)
+	if err != nil {
+		code, msg := errs.ParseGrpcError(err)
+		c.JSON(http.StatusOK, p.result.Fail(code, msg))
+	}
+	rsp := Project{}
+	copier.Copy(&rsp, rpcRsp)
+
+	OrganizationCodeEncrypt, _ := encrypts.EncryptInt64(rpcRsp.OrganizationCode, encrypts.AESKEY)
+
+	c.JSON(http.StatusOK, p.result.Success(gin.H{ //手动选择部分数据组装
+		"crete_time":        rsp.CreateTime,
+		"code":              rsp.Code,
+		"name":              rsp.Name,
+		"description":       rsp.Description,
+		"organization_code": OrganizationCodeEncrypt,
+		"task_board_theme":  rsp.TaskBoardTheme,
+		"cover":             rsp.Cover,
+		"id":                rsp.Id,
+	}))
+}
+
+func (p *ProjectHandler) ReadProject(c *gin.Context) {
+	projectCodeEncrypted := c.PostForm("projectCode")
+	//projectCodeEncrypted, _ = encrypts.Decrypt(projectCodeEncrypted, encrypts.AESKEY)
+	projectCode, _ := strconv.ParseInt(projectCodeEncrypted, 10, 64)
+	fmt.Println("解密ProjectCode为:", projectCode)
+
+	msg := project_grpc.ProjectMessage{ProjectCode: projectCode}
+	rpcRsp, err := rpc.ProjectServiceClient.ReadProject(context.Background(), &msg)
+	if err != nil {
+		code, msg := errs.ParseGrpcError(err)
+		c.JSON(http.StatusOK, p.result.Fail(code, msg))
+	}
+
+	jsonRsp := SingleProjectMessage{}
+	copier.Copy(&jsonRsp, rpcRsp)
+	jsonRsp.Code, _ = encrypts.EncryptInt64(rpcRsp.Id, encrypts.AESKEY)
+
+	c.JSON(http.StatusOK, p.result.Success(jsonRsp))
 }
 
 type Project struct {
@@ -217,4 +273,34 @@ type ProjectTemplate struct {
 
 type TaskStagesOnlyName struct {
 	Name string `json:"name"`
+}
+
+type SingleProjectMessage struct {
+	Code               string  `json:"code"` //待填充
+	Cover              string  `json:"cover"`
+	Name               string  `json:"name"`
+	Description        string  `json:"description"`
+	AccessControlType  int     `json:"access_control_type"`
+	WhiteList          string  `json:"white_list"`
+	Sort               int     `json:"sort"`
+	Deleted            int     `json:"deleted"`
+	TemplateCode       string  `json:"template_code"`
+	Schedule           float64 `json:"schedule"`
+	CreateTime         int64   `json:"create_time"`
+	OrganizationCode   int64   `json:"organization_code"`
+	DeletedTime        string  `json:"deleted_time"`
+	Private            int     `json:"private"`
+	Prefix             string  `json:"prefix"`
+	OpenPrefix         int     `json:"open_prefix"`
+	Archive            int     `json:"archive"`
+	ArchiveTime        int64   `json:"archive_time"`
+	OpenBeginTime      int     `json:"open_begin_time"`
+	OpenTaskPrivate    int     `json:"openTaskPrivate"`
+	TaskBoardTheme     string  `json:"task_board_theme"`
+	BeginTime          int64   `json:"begin_time"`
+	EndTime            int64   `json:"end_time"`
+	AutoUpdateSchedule int     `json:"auto_update_schedule"`
+	Collected          int     `json:"collected"`
+	OwnerName          string  `json:"owner_name"`
+	OwnerAvatar        string  `json:"owner_avatar"`
 }

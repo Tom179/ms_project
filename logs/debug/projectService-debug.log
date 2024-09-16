@@ -8230,3 +8230,7 @@
 {"level":"ERROR","time":"2024-09-09T06:34:44.673+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}
 {"level":"ERROR","time":"2024-09-09T06:35:03.338+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}
 {"level":"ERROR","time":"2024-09-09T07:20:48.461+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-09-15T18:20:42.317+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-09-15T19:02:01.354+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-09-16T02:10:59.895+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}
+{"level":"ERROR","time":"2024-09-16T20:24:45.848+0800","caller":"discovery/discovery.go:122","msg":"register failed","error":"context deadline exceeded"}

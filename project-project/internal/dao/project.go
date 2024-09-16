@@ -13,6 +13,32 @@ type ProjectDao struct {
 	conn *gorms.GormConn
 }
 
+func (p ProjectDao) ReadOneProject(ctx context.Context, projectID int64) (project.SingleProjectMessage, error) {
+
+	sql := "select a.*,b.member_code,c.name as owner_name,c.avatar as owner_avatar from ms_project a,ms_project_member b,ms_member c where a.id=b.project_code and b.member_code=c.id and project_code=?"
+	singleProjectMessage := project.SingleProjectMessage{}
+	sql2 := "select count(*) as collected from ms_project_collection where  project_code=? and member_code=?"
+
+	err := p.conn.Session(ctx).Raw(sql, projectID).Find(&singleProjectMessage).Error
+	err = p.conn.Session(ctx).Model(&project.MemberCollectedProject{}).Raw(sql2, projectID, singleProjectMessage.MemberCode).Find(&singleProjectMessage).Error
+	return singleProjectMessage, err
+}
+
+func (p ProjectDao) CreateProject(ctx context.Context, newProject *project.Project, id int64) error {
+	err := p.conn.Session(ctx).Create(&newProject).Error
+	ralation := project.MemberProject{
+		ProjectCode: newProject.Id,
+		MemberCode:  id,
+		JoinTime:    newProject.CreateTime,
+	}
+	err = p.conn.Session(ctx).Create(&ralation).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (p ProjectDao) FindMyProjectByMemId(ctx context.Context, memId int64, page int64, size int64, condition string) ([]*project.ProjectAndMenber, int64, error) {
 	var pm []*project.ProjectAndMenber
 	session := p.conn.Session(ctx)
